@@ -29,7 +29,6 @@ export const events: CremosaEvent[] = [
     lineup: ["Cremosa"],
     ticketUrl: "https://https://www.sympla.com.br/evento/baile-do-dez-segunda-edicao/3481116.com",
     note: ".",
-    mock: true,
   },
   // {
   //   slug: "mock-festival-2026-10",
@@ -61,7 +60,6 @@ export const events: CremosaEvent[] = [
     lineup: ["Cremosa"],
     ticketUrl: "https://shotgun.live/en/events/role-do-kit?uhandle=clarissad836&utm_campaign=share_event&utm_term=clarissad836&utm_source=ig&utm_medium=social&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQPOTM2NjE5NzQzMzkyNDU5AAGnFELCsH-vMcibY9xT4T8g9c0kMptJP_fJdbSVtydwwKxVtXMmVamkLSu27LI_aem_zm5oHQ3F9bH63YwvnemE6A",
     note: ".",
-    mock: true,
   },
     {
     slug: "mock-private-2026-09",
@@ -77,7 +75,6 @@ export const events: CremosaEvent[] = [
     lineup: ["Cremosa"],
     ticketUrl: "https://www.sympla.com.br/evento/cha-das-patroas-ed-anos-2000/3461297",
     note: ".",
-    mock: true,
   },
 
   // ─────── PAST (confirmed, from Midia Kit 2026) ───────
