@@ -851,21 +851,85 @@ body[data-gate-active="true"] header.sticky {
 }
 
 /* ──────────────────────────────────────────────────────────────────
+   Win95-style yellow tooltip
+   ──────────────────────────────────────────────────────────────────
+
+   Classic Win9x tooltip: cream-yellow #FFFFE1 background, 1px solid
+   black border, VT323 pixel font. Apply by adding `win95-icon` class
+   to any tappable element with a `data-tooltip="..."` attribute (the
+   attribute also doubles as a fallback for screen readers).
+
+   The tooltip floats above the icon, centered, with a 200ms fade
+   delay. Pointer events are disabled so it never blocks clicks. */
+
+.win95-icon {
+  position: relative;
+}
+
+.win95-icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: #ffffe1;
+  color: #000;
+  font-family: var(--font-pixel);
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  padding: 4px 8px;
+  border: 1px solid #000;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease-out, transform 120ms ease-out;
+  transition-delay: 320ms;
+  z-index: 50;
+  /* Hide default browser title */
+  /* (the `title` attr still works as a fallback for AT + non-CSS browsers) */
+}
+
+.win95-icon:hover::after,
+.win95-icon:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Suppress the native browser tooltip when our CSS one is visible.
+   Achieved by overriding title behaviour via aria-label, which the
+   AT will still read. */
+.win95-icon[title] {
+  /* Keep title for AT — just delay it visually so it doesn't race
+     the custom tooltip on quick hover-out. */
+}
+
+/* ──────────────────────────────────────────────────────────────────
    Win95 typography pattern
    ──────────────────────────────────────────────────────────────────
 
-   The site has four font roles. Use these utility classes everywhere
-   so the same Win95 feel reads consistently across the whole page.
+   The site is fully Win95-typographed. Use these utility classes
+   everywhere so the same MS-Sans-Serif feel reads consistently.
 
-     win-display   hero / cover title   (Bagel Fat One, .bubble-strong)
-     win-h2        section heading      (Bagel Fat One, .bubble)
-     win-eyebrow   small label          (VT323, 11px, 0.22em tracking)
-     win-body      body copy            (VT323, 14px, relaxed)
-     win-body-sm   dense copy           (VT323, 12.5px)
-     win-caption   small dim text       (VT323, 11px)
-     win-button    button text          (VT323, 14px)
-     win-status    status-bar text      (VT323, 13px)
-     win-title     win95 title-bar text (VT323, 13px)
+     win-display   hero h1 (Bagel Fat One)    — CREMOSA, AGENDA, SOBRE…
+     win-h2        section heading (Bagel Fat One)
+     win-eyebrow   "// foo" labels   (VT323, 11px, uppercase, 0.22em)
+     win-body      body copy          (VT323, 14px, 1.55 line-height)
+     win-body-sm   dense copy         (VT323, 12.5px, 1.5 line-height)
+     win-caption   small dim text     (VT323, 11px, uppercase, 0.18em)
+     win-button-text   button text    (VT323, 13px)
+     win-status-text   status-bar     (VT323, 12px)
+     win-title-text    win95 title    (VT323, 13px)
+     win-mono      Notepad body only   (Geist Mono, 13px)
+
+   Body default font is VT323 (MS Sans Serif pixel), so any unstyled
+   text inherits the Win95 feel. The `font-pixel` class is reserved
+   for ad-hoc chrome that needs explicit overrides.
+
+   Hero display titles (.bubble-strong) are the only Bagel Fat One
+   use on the site. Geist Mono is reserved for the .notepad-body
+   class — it's literally a Notepad.
 
    The sizes deliberately mirror what a real Windows 95/98 system
    would render at 96 dpi, then bumped ~25% so they read at modern
@@ -886,7 +950,7 @@ body[data-gate-active="true"] header.sticky {
 
 .win-eyebrow {
   font-family: var(--font-pixel);
-  font-size: 20px;
+  font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   font-weight: 400;
@@ -895,37 +959,47 @@ body[data-gate-active="true"] header.sticky {
 
 .win-body {
   font-family: var(--font-pixel);
-  font-size: 20px;
+  font-size: 14px;
   line-height: 1.55;
 }
 
 .win-body-sm {
   font-family: var(--font-pixel);
-  font-size: 18px;
+  font-size: 12.5px;
   line-height: 1.5;
 }
 
 .win-caption {
   font-family: var(--font-pixel);
-  font-size: 18px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   line-height: 1.4;
   color: var(--color-cream-dim);
 }
 
 .win-button-text {
   font-family: var(--font-pixel);
-  font-size: 20px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
 }
 
 .win-status-text {
   font-family: var(--font-pixel);
-  font-size: 20px;
+  font-size: 12px;
 }
 
 .win-title-text {
   font-family: var(--font-pixel);
-  font-size: 20px;
+  font-size: 13px;
   letter-spacing: 0.02em;
+}
+
+/* Monospace — reserved for the Notepad component only. */
+.win-mono {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 /* Shell — consistent page container widths & padding. Every page

@@ -56,14 +56,11 @@ export default function HomePage() {
             {site.brand.tagline.primary}
           </p>
 
-          {/* Big bold heading + italic subtitle — Win95.com style */}
+          {/* Big bold heading — Win95.com style */}
           <h2 className="font-display text-4xl sm:text-6xl text-cream leading-tight">
             Welcome to <span className="bubble-strong">Cremosa</span>
             <span className="align-super text-bubble text-2xl">™</span>
           </h2>
-          <p className="mt-3 italic text-bubble text-xl sm:text-2xl font-medium">
-            {site.brand.tagline.secondary}
-          </p>
 
           {/* Welcome dialog — 4×3 icon grid (Win95.com pattern) */}
           <div className="mt-10 w-full max-w-4xl">
@@ -80,7 +77,9 @@ export default function HomePage() {
                           href={icon.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group no-underline flex flex-col items-center gap-2"
+                          className="win95-icon group no-underline flex flex-col items-center gap-2"
+                          data-tooltip={`Abrir ${icon.label} em nova aba`}
+                          title={icon.label}
                         >
                           <span
                             aria-hidden
@@ -96,7 +95,9 @@ export default function HomePage() {
                       ) : (
                         <Link
                           href={icon.href}
-                          className="group no-underline flex flex-col items-center gap-2"
+                          className="win95-icon group no-underline flex flex-col items-center gap-2"
+                          data-tooltip={`Ir para ${icon.label}`}
+                          title={icon.label}
                         >
                           <span
                             aria-hidden
