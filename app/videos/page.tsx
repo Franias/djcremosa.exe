@@ -102,9 +102,6 @@ export default function VideosPage() {
         <header className="mb-6 flex items-baseline justify-between gap-4 flex-wrap">
           <div>
             <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// em destaque"}</p>
-            <h2 className="win-h2 text-cream text-3xl sm:text-4xl">
-              Mais recentes
-            </h2>
           </div>
           <a
             href={youtubeChannel.url}
@@ -135,9 +132,6 @@ export default function VideosPage() {
       <section className="shell py-10 sm:py-14 border-t border-line">
         <header className="mb-6">
           <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// arquivo"}</p>
-          <h2 className="win-h2 text-cream text-3xl sm:text-4xl">
-            Todos os vídeos
-          </h2>
         </header>
 
         <ul className="list-none p-0 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
