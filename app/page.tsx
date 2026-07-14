@@ -51,7 +51,7 @@ export default function HomePage() {
         <div className="shell relative z-10 flex flex-col items-center text-center">
           <h1 className="sr-only">Cremosa — Início</h1>
           {/* Breadcrumb — the page indicator */}
-          <p className="win-eyebrow text-bubble mb-8 self-start">
+          <p className="win-eyebrow win-eyebrow-shadow mb-8 self-start">
             <span aria-hidden>{"//"}</span>
             Início <span className="opacity-60 mx-1">›</span>{" "}
             {site.brand.tagline.primary}
@@ -134,7 +134,7 @@ export default function HomePage() {
               <span key={label.href + label.label}>
                 <Link
                   href={label.href}
-                  className="text-cream hover:text-bubble underline underline-offset-2"
+                  className="text-cream hover:win-eyebrow-shadow underline underline-offset-2"
                 >
                   {label.label}
                 </Link>
@@ -159,7 +159,7 @@ export default function HomePage() {
         <header className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-8">
           <div className="relative">
             <Sparkle size="sm" className="absolute -top-4 -left-5" />
-            <p className="win-eyebrow text-bubble mb-2">
+            <p className="win-eyebrow win-eyebrow-shadow mb-2">
               {"// próximas datas"}
             </p>
           </div>
@@ -208,7 +208,7 @@ export default function HomePage() {
 
       {/* PRESS HIGHLIGHTS — Win95 window containing the list */}
       <section className="shell py-16 sm:py-24 border-t border-line">
-        <p className="win-eyebrow text-bubble mb-2">{"// em destaque"}</p>
+        <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// em destaque"}</p>
         <h2 className="win-h2 text-cream text-4xl sm:text-5xl leading-tight max-w-2xl mb-10">
           Dez anos na pista, da cena de Porto Alegre pro mundo.
         </h2>
@@ -235,7 +235,7 @@ export default function HomePage() {
 
       {/* SYSTEM FOLDER — contato + onde me achar, lifted from old second footer */}
       <section className="shell py-16 sm:py-24 border-t border-line">
-        <p className="win-eyebrow text-bubble mb-2">{"// pasta do sistema"}</p>
+        <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// pasta do sistema"}</p>
 
         <Win95Window title="cremosa — pasta do sistema" controls>
           <div className="p-5 sm:p-6 bg-win-face text-win-ink flex flex-col gap-6 sm:flex-row sm:justify-between sm:items-start">

@@ -39,7 +39,7 @@ export default function SobrePage() {
       <section className="hero grain halftone">
         <div className="shell relative z-10">
           <h1 className="sr-only">Sobre — Cremosa</h1>
-          <p className="win-eyebrow text-bubble mb-6">
+          <p className="win-eyebrow win-eyebrow-shadow mb-6">
             <span aria-hidden>{"//"}</span>
             Início <span className="opacity-60 mx-1">›</span> Sobre
           </p>
@@ -119,7 +119,7 @@ export default function SobrePage() {
 
       {/* CAREER NOTEPADS — kit page 3 reference */}
       <section className="shell py-16 sm:py-24">
-        <p className="win-eyebrow text-bubble mb-2">{"// trajetória"}</p>
+        <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// trajetória"}</p>
         <h2 className="win-h2 text-cream text-4xl sm:text-5xl leading-tight mb-12 max-w-2xl">
           Da cena de Porto Alegre pro line-up do Planeta Atlântida.
         </h2>
@@ -145,7 +145,7 @@ export default function SobrePage() {
 
       {/* TIMELINE — file-explorer grid in Win95 windows */}
       <section className="shell py-16 sm:py-24 border-t border-line">
-        <p className="win-eyebrow text-bubble mb-2">
+        <p className="win-eyebrow win-eyebrow-shadow mb-2">
           {"// linha do tempo · 2016 → hoje"}
         </p>
         <h2 className="win-h2 text-cream text-4xl sm:text-5xl leading-tight mb-10">

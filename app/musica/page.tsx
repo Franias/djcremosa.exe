@@ -270,7 +270,7 @@ export default function MusicaPage() {
       <section className="hero grain halftone">
         <div className="shell relative z-10">
           <h1 className="sr-only">Música — Cremosa</h1>
-          <p className="win-eyebrow text-bubble mb-6">
+          <p className="win-eyebrow win-eyebrow-shadow mb-6">
             <span aria-hidden>{"//"}</span>
             Início <span className="opacity-60 mx-1">›</span> Música
           </p>
@@ -304,7 +304,7 @@ export default function MusicaPage() {
                 style={{ borderColor: "var(--color-bubble)" }}
               >
                 <div className="text-center px-6">
-                  <p className="win-eyebrow text-bubble mb-1 text-[18px]">
+                  <p className="win-eyebrow win-eyebrow-shadow mb-1 text-[18px]">
                     drop to load
                   </p>
                   <p className="win-body-sm text-win-ink">
@@ -327,7 +327,7 @@ export default function MusicaPage() {
                 <span
                   className={[
                     "win-display text-[20px] leading-none shrink-0",
-                    isPlaying ? "text-bubble animate-pulse" : "text-win-shadow-deep",
+                    isPlaying ? "win-eyebrow-shadow animate-pulse" : "text-win-shadow-deep",
                   ].join(" ")}
                 >
                   {isPlaying ? "▶" : "❚❚"}
@@ -400,7 +400,7 @@ export default function MusicaPage() {
 
       {/* PLAYLIST — Win95 list view below the visualizer */}
       <section className="shell py-10 sm:py-14 border-t border-line">
-        <p className="win-eyebrow text-bubble mb-4">
+        <p className="win-eyebrow win-eyebrow-shadow mb-4">
           {"// clica pra tocar"}
         </p>
 
@@ -524,7 +524,7 @@ function Playlist({ tracks, currentSlug, isPlaying, onPlay }: PlaylistProps) {
                       "text-center",
                       active
                         ? "text-cream animate-pulse"
-                        : "text-bubble opacity-0 group-hover:opacity-100",
+                        : "win-eyebrow-shadow opacity-0 group-hover:opacity-100",
                     ].join(" ")}
                     aria-hidden
                   >

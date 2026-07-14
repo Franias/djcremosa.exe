@@ -34,7 +34,7 @@ export default function AgendaPage() {
         <div className="shell relative z-10">
           <h1 className="sr-only">Agenda — Cremosa</h1>
           {/* Breadcrumb — informs the user which page they are on */}
-          <p className="win-eyebrow text-bubble mb-6">
+          <p className="win-eyebrow win-eyebrow-shadow mb-6">
             <span aria-hidden>{"//"}</span>
             Início <span className="opacity-60 mx-1">›</span> Agenda · {new Date().getFullYear()}
           </p>

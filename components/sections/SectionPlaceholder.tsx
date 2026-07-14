@@ -31,7 +31,7 @@ export function SectionPlaceholder({
     <>
       <section className="hero grain">
         <div className="shell relative z-10 flex flex-col items-center text-center">
-          <p className="win-eyebrow text-bubble mb-4">{`// ${eyebrow}`}</p>
+          <p className="win-eyebrow win-eyebrow-shadow mb-4">{`// ${eyebrow}`}</p>
           <h1 className="win-display bubble text-[18vw] sm:text-[10rem]">
             {title.toUpperCase()}
           </h1>
@@ -60,13 +60,13 @@ export function SectionPlaceholder({
 
         <p className="mt-10 win-body-sm text-cream-dim">
           Até lá, confere a{" "}
-          <a href="/agenda" className="text-bubble hover:text-bubble-hi">
+          <a href="/agenda" className="win-eyebrow-shadow hover:text-bubble-hi">
             agenda
           </a>{" "}
           ou manda mensagem pelo{" "}
           <a
             href={`mailto:${process.env.NEXT_PUBLIC_BOOKING_EMAIL ?? "franciellipdias@gmail.com"}`}
-            className="text-bubble hover:text-bubble-hi"
+            className="win-eyebrow-shadow hover:text-bubble-hi"
           >
             booking
           </a>

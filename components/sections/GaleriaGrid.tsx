@@ -46,7 +46,7 @@ export function GaleriaGrid() {
       <section className="hero grain halftone">
         <div className="shell relative z-10">
           <h1 className="sr-only">Galeria — Cremosa</h1>
-          <p className="win-eyebrow text-bubble mb-6">
+          <p className="win-eyebrow win-eyebrow-shadow mb-6">
             <span aria-hidden>{"//"}</span>
             Início <span className="opacity-60 mx-1">›</span> Galeria
           </p>
@@ -206,7 +206,7 @@ function Tile({
             <span className="win-eyebrow-sm truncate">
               foto · {photo.credit}
             </span>
-            <span className="win-eyebrow-sm text-bubble">→ abrir</span>
+            <span className="win-eyebrow-sm win-eyebrow-shadow">→ abrir</span>
           </div>
         </div>
       </div>
@@ -273,7 +273,7 @@ function Lightbox({
             {!loaded && (
               <div className="absolute inset-0 grid place-items-center p-6">
                 <div className="w-full max-w-md flex flex-col gap-2">
-                  <p className="win-eyebrow-sm text-bubble text-center">
+                  <p className="win-eyebrow-sm win-eyebrow-shadow text-center">
                     Carregando imagem…
                   </p>
                   <Win95ProgressBar value={progress} label="Carregando imagem" />

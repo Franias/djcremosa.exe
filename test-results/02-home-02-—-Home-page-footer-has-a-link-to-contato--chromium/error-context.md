@@ -195,7 +195,7 @@ Call log:
     - text: ● Pronto · Porto Alegre, RS — Brasil Cremosa · desde 2016
     - link "Booking →":
       - /url: /contato/
-    - text: 21:06
+    - text: 21:10
 - alert
 ```
 

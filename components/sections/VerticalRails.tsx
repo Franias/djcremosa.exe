@@ -23,7 +23,7 @@ export function VerticalRails() {
       <div className="mx-auto max-w-[1600px] relative h-full">
         {/* Left rail — vertical text, centered vertically */}
         <span
-          className="absolute left-4 xl:left-6 top-1/2 -translate-y-1/2 win-eyebrow text-bubble/80 whitespace-nowrap"
+          className="absolute left-4 xl:left-6 top-1/2 -translate-y-1/2 win-eyebrow win-eyebrow-shadow opacity-80 whitespace-nowrap"
           style={{ writingMode: "vertical-rl", transform: "rotate(180deg) translateY(50%)" }}
         >
           {LEFT_RAIL}
@@ -31,13 +31,13 @@ export function VerticalRails() {
 
         {/* Right rail — two anchored blocks (PRESS KIT / 2026) like the kit */}
         <span
-          className="absolute right-4 xl:right-6 top-[15%] win-eyebrow text-bubble/80 whitespace-nowrap"
+          className="absolute right-4 xl:right-6 top-[15%] win-eyebrow win-eyebrow-shadow opacity-80 whitespace-nowrap"
           style={{ writingMode: "vertical-rl" }}
         >
           {RIGHT_TOP}
         </span>
         <span
-          className="absolute right-4 xl:right-6 bottom-[15%] win-eyebrow text-bubble/80 whitespace-nowrap"
+          className="absolute right-4 xl:right-6 bottom-[15%] win-eyebrow win-eyebrow-shadow opacity-80 whitespace-nowrap"
           style={{ writingMode: "vertical-rl" }}
         >
           {RIGHT_BOT}

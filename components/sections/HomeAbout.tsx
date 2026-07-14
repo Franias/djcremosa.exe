@@ -74,7 +74,7 @@ export function HomeAbout() {
               </div>
               <div className="mt-6 pt-4 border-t border-win-shadow-deep/40 flex justify-end gap-2 items-center">
                 {justCopied && (
-                  <span className="win-caption text-bubble animate-pulse">
+                  <span className="win-caption win-eyebrow-shadow animate-pulse">
                     ✓ copiado
                   </span>
                 )}

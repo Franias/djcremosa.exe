@@ -24,7 +24,7 @@ export default function VideosPage() {
       {/* HERO */}
       <section className="relative overflow-hidden grain halftone">
         <div className="shell relative z-10">
-          <p className="win-eyebrow text-bubble mb-4">
+          <p className="win-eyebrow win-eyebrow-shadow mb-4">
             {"// lives · sets filmados"}
           </p>
 
@@ -101,7 +101,7 @@ export default function VideosPage() {
       <section className="shell py-10 sm:py-14">
         <header className="mb-6 flex items-baseline justify-between gap-4 flex-wrap">
           <div>
-            <p className="win-eyebrow text-bubble mb-2">{"// em destaque"}</p>
+            <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// em destaque"}</p>
             <h2 className="win-h2 text-cream text-3xl sm:text-4xl">
               Mais recentes
             </h2>
@@ -134,7 +134,7 @@ export default function VideosPage() {
       {/* ARCHIVE — rest of the videos in a smaller grid */}
       <section className="shell py-10 sm:py-14 border-t border-line">
         <header className="mb-6">
-          <p className="win-eyebrow text-bubble mb-2">{"// arquivo"}</p>
+          <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// arquivo"}</p>
           <h2 className="win-h2 text-cream text-3xl sm:text-4xl">
             Todos os vídeos
           </h2>
@@ -176,7 +176,7 @@ export default function VideosPage() {
                         <span className="win-caption text-win-shadow-deep">
                           youtube.com
                         </span>
-                        <span className="win-caption text-bubble">
+                        <span className="win-caption win-eyebrow-shadow">
                           ▶ assistir
         </span>
                       </div>

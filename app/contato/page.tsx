@@ -39,13 +39,13 @@ export default function ContatoPage() {
       <section className="hero grain scanlines">
         <div className="shell relative z-10">
           <h1 className="sr-only">Contato — Cremosa</h1>
-          <p className="win-eyebrow text-bubble mb-6">
+          <p className="win-eyebrow win-eyebrow-shadow mb-6">
             <span aria-hidden>{"//"}</span>
             Início <span className="opacity-60 mx-1">›</span> Contato
           </p>
           <p className="mt-6 max-w-2xl win-body text-cream-dim">
             Pra proposta de show, festival ou residência, manda direto pelo
-            email. Resposta em até <span className="text-bubble">72h úteis</span>.
+            email. Resposta em até <span className="win-eyebrow-shadow">72h úteis</span>.
           </p>
         </div>
       </section>
