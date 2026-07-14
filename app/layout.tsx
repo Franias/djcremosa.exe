@@ -103,7 +103,17 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} ${bagelFat.variable} ${vt323.variable}`}
     >
-      <body className="min-h-screen flex flex-col bg-bg text-cream">
+      <body
+        className="min-h-screen flex flex-col bg-bg text-cream"
+        style={
+          {
+            // basePath-aware URL so the CSS background-image resolves
+            // correctly in production (e.g. /djcremosa/bg/...) while
+            // staying empty in dev where basePath is "".
+            "--bg-stars": `url("${site.basePath}/bg/star-halftone.jpg")`,
+          } as React.CSSProperties
+        }
+      >
         {/* Animated background gradient — slow hue drift */}
         <div className="bg-anim" aria-hidden />
         <div className="bg-anim-grain" aria-hidden />

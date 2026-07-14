@@ -76,12 +76,12 @@ body {
 
 body {
   /* Y2K halftone pink-star tile + magenta gradient base.
-     Tile is rendered at 0.5 opacity on top of the wine gradient so
-     the pink halftone dots read clearly while the bg stays wine.
-     `soft-light` blend keeps the pink stars bright without washing
-     out the bg. */
+     The --bg-stars CSS var is set in layout.tsx so the URL gets
+     the site.basePath prefix in production (e.g. /djcremosa/bg/...).
+     Falls back to /bg/star-halftone.jpg for dev. */
+  --bg-stars: url("/bg/star-halftone.jpg");
   background:
-    url("/bg/star-halftone.jpg"),
+    var(--bg-stars),
     linear-gradient(
       180deg,
       #6a2840 0%,
@@ -95,8 +95,6 @@ body {
   background-attachment: fixed, fixed, fixed;
   background-blend-mode: soft-light, normal, normal;
   background-color: var(--color-bg);
-  /* Soften the tile so it reads as a wallpaper pattern, not a
-     stamp. opacity lives here, not on the layer. */
   position: relative;
 }
 body::before {
@@ -105,7 +103,7 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url("/bg/star-halftone.jpg");
+  background-image: var(--bg-stars);
   background-size: 220px 220px;
   background-repeat: repeat;
   background-position: 0 0;
