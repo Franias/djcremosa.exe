@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { YouTubePlayer } from "@/components/sections/YouTubePlayer";
+import { YouTubePlaylistPlayer } from "@/components/sections/YouTubePlaylistPlayer";
 import { Win95Button, Win95Window } from "@/components/ui/win95";
 import {
+  afrJamsPlaylist,
   youtubeChannel,
   youtubeVideos,
+  type YouTubePlaylist,
 } from "@/content/youtube";
 import { site } from "@/lib/site";
 
@@ -128,6 +131,87 @@ export default function VideosPage() {
         </div>
       </section>
 
+      {/* AFROJAMS — guest playlist from the collective Cremosa co-founded.
+          Playlist embed + Win95 tracklist side-by-side, then a subscribe
+          CTA pointing at @AFRXJAMS. */}
+      <section className="shell py-10 sm:py-14 border-t border-line">
+        <header className="mb-6 flex items-baseline justify-between gap-4 flex-wrap">
+          <div>
+            <p className="win-eyebrow win-eyebrow-shadow mb-2">
+              {"// temporada afrojams · dj cremosa"}
+            </p>
+            <h2 className="win-h2 text-win-shadow-deep">
+              {afrJamsPlaylist.title}
+            </h2>
+            <p className="win-body-sm text-cream-dim mt-3 max-w-2xl">
+              {afrJamsPlaylist.blurb}
+            </p>
+          </div>
+          <a
+            href={afrJamsPlaylist.playlistUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="no-underline"
+          >
+            <Win95Button focused>↗ ver playlist inteira</Win95Button>
+          </a>
+        </header>
+
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Big playlist embed — takes 2 of 3 columns on lg+. */}
+          <div className="lg:col-span-2">
+            <YouTubePlaylistPlayer playlist={afrJamsPlaylist} />
+          </div>
+
+          {/* Tracklist — Win95 window, mirrors the playlist.exe look
+              on /musica so the two pages rhyme. */}
+          <PlayListWindow
+            playlist={afrJamsPlaylist}
+          />
+        </div>
+
+        {/* Channel footer — subscribe to the @AFRXJAMS channel that
+            hosts this playlist. */}
+        <div className="mt-6 win95-bevel-out bg-win-face p-[2px] max-w-3xl">
+          <div className="win95-bevel-deep-in bg-win-face px-4 py-3 flex items-center gap-3 flex-wrap">
+            {afrJamsPlaylist.channel.avatar && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={afrJamsPlaylist.channel.avatar}
+                alt={`${afrJamsPlaylist.channel.handle} avatar`}
+                width={40}
+                height={40}
+                loading="lazy"
+                decoding="async"
+                className="w-10 h-10 win95-bevel-out bg-win-face-2 object-cover"
+                style={{ imageRendering: "pixelated" }}
+              />
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="win-body-sm text-win-ink">
+                Hospedado em{" "}
+                <span className="win-eyebrow-shadow text-bubble">
+                  {afrJamsPlaylist.channel.handle}
+                </span>
+                {" · "}
+                {afrJamsPlaylist.channel.name}
+              </p>
+              <p className="win-caption text-win-shadow-deep mt-0.5">
+                canal parceiro · filma os sets ao vivo
+              </p>
+            </div>
+            <a
+              href={`${afrJamsPlaylist.channel.url}?sub_confirmation=1`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="no-underline shrink-0"
+            >
+              <Win95Button>★ Subscribe</Win95Button>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* ARCHIVE — rest of the videos in a smaller grid */}
       <section className="shell py-10 sm:py-14 border-t border-line">
         <header className="mb-6">
@@ -227,5 +311,71 @@ export default function VideosPage() {
         </Win95Window>
       </section>
     </>
+  );
+}
+
+/**
+ * PlayListWindow — Win95-styled tracklist for a YouTube playlist,
+ * mirrors the Playlist component on /musica so the two pages rhyme.
+ * Each row is an anchor that opens the video inside the playlist on
+ * YouTube (so the listener keeps watching from that point).
+ */
+function PlayListWindow({ playlist }: { playlist: YouTubePlaylist }) {
+  const tracks = playlist.tracks;
+  return (
+    <div className="win95-bevel-out bg-win-face p-[2px]">
+      <div className="win95-bevel-deep-in bg-win-face">
+        {/* Title bar */}
+        <div className="win95-title" role="presentation">
+          <span className="win-title-text">
+            {`afrojams-temp.txt — ${tracks.length} faixas`}
+          </span>
+          <span className="win95-title-controls" aria-hidden>
+            <span>─</span>
+            <span>□</span>
+            <span className="close">×</span>
+          </span>
+        </div>
+
+        {/* Column headers */}
+        <div
+          className="grid items-center gap-2 px-3 py-1.5 bg-[#d4d0c8] border-b border-win-shadow-deep/40 win-eyebrow text-win-shadow-deep"
+          style={{ gridTemplateColumns: "32px 1fr 56px" }}
+        >
+          <span className="text-right">#</span>
+          <span>Título</span>
+          <span className="text-right">↗</span>
+        </div>
+
+        {/* Track rows — each opens the video inside the playlist. */}
+        <ol className="list-none p-0 m-0">
+          {tracks.map((t, i) => (
+            <li key={t.id}>
+              <a
+                href={`https://www.youtube.com/watch?v=${t.id}&list=${playlist.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-left grid items-center gap-2 px-3 py-1.5 win-body-sm tabular-nums transition-colors bg-win-face text-win-ink hover:bg-[#dde9f5] no-underline"
+                style={{ gridTemplateColumns: "32px 1fr 56px" }}
+              >
+                <span className="text-right opacity-70">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="truncate">{t.title}</span>
+                <span className="text-right win-eyebrow-shadow">▶</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+
+        {/* Status bar */}
+        <div className="win95-statusbar mt-1">
+          <span className="win95-statusbar-segment grow">
+            {`${tracks.length} sets · ${playlist.channel.handle}`}
+          </span>
+          <span className="win95-statusbar-segment shrink">playlist</span>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -98,3 +98,124 @@ export function youtubeEmbedUrl(id: string): string {
   });
   return `${youtubeChannel.embedUrl}/${id}?${params.toString()}`;
 }
+
+/**
+ * YouTubePlaylist — a curated collection on YouTube that lives outside
+ * of Cremosa's own channel. Used to surface guest appearances (e.g.
+ * AFROJAMS) on /videos without duplicating each video into
+ * `youtubeVideos`.
+ */
+export interface YouTubePlaylist {
+  /** YouTube playlist ID, e.g. "PLLi5256twtgA". */
+  id: string;
+  /** Editorial title shown in the section header on /videos. */
+  title: string;
+  /** Short blurb (one sentence) shown next to the embed. */
+  blurb: string;
+  /** Total video count, displayed in the badge + status bar. */
+  count: number;
+  /** First video ID of the playlist — used as the lite-embed thumbnail. */
+  coverVideoId: string;
+  /** Owner of the playlist (may differ from Cremosa's channel). */
+  channel: {
+    /** Display name, e.g. "AFROJAMS". */
+    name: string;
+    /** @handle, e.g. "@AFRXJAMS". */
+    handle: string;
+    /** Channel URL on YouTube. */
+    url: string;
+    /** Avatar URL — round, prefer YouTube's s800+ size. */
+    avatar?: string;
+  };
+  /** Tracks in playlist order, oldest to newest. */
+  tracks: YouTubeVideo[];
+  /** Full playlist URL on YouTube. */
+  playlistUrl: string;
+}
+
+/** Minimal "use" type for an AFROJAMS track entry. */
+export interface AfroJamsTrack {
+  id: string;
+  title: string;
+  thumbnail: string;
+}
+
+/** YouTube `mqdefault.jpg` URL for a video (320×180, 16:9 — perfect lite-embed thumb). */
+const YT_MQ = (id: string) => `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+
+/**
+ * AfroJams playlist — DJ Cremosa's appearances on the @AFRXJAMS
+ * channel, curated as one playlist. Added 2026-07-14.
+ *
+ * Source: https://www.youtube.com/playlist?list=PLLi5256twtgA
+ * (verified 2026-07-14 — 6 videos total, all featuring DJ Cremosa).
+ *
+ * To refresh: scrape the playlist page (same trick as the YouTube
+ * catalogue) and update the `tracks` array. The cover thumbnail
+ * (`coverVideoId`) should stay on the first video of the list.
+ */
+export const afrJamsPlaylist: YouTubePlaylist = {
+  id: "PLLi5256twtgA",
+  title: "AFROJAMS · TEMPORADAS — DJ Cremosa",
+  blurb:
+    "Co-fundadora do coletivo AfroJams (2025). Seis sets dela filmados no canal @AFRXJAMS — Black Divas, R&B, afrobeats, charme, Miami bass e brasilidades.",
+  count: 6,
+  coverVideoId: "4sU4o_ViyfE",
+  channel: {
+    name: "AFROJAMS",
+    handle: "@AFRXJAMS",
+    url: "https://www.youtube.com/@AFRXJAMS",
+    avatar:
+      "https://yt3.googleusercontent.com/ytc/AIdro_mpY9pUw6VNpPO5ZHRnFF0nmfBOjjl8X68DTVNUqp7q6EJh=s240-c-k-c0x00ffffff-no-rj",
+  },
+  tracks: [
+    {
+      id: "4sU4o_ViyfE",
+      title:
+        "AFROJAMS — TEMP. 01 · EP. 01 · DJ CREMOSA",
+      thumbnail: YT_MQ("4sU4o_ViyfE"),
+    },
+    {
+      id: "yLfkUE_JuW4",
+      title:
+        "AFROJAMS — TEMP. 02 · EP. 03 · BADDIE LOMA b2b CREMOSA · DJ SET BLACK DIVAS · RAP E TRAP FEMININO",
+      thumbnail: YT_MQ("yLfkUE_JuW4"),
+    },
+    {
+      id: "1_uXQTNd4zk",
+      title:
+        "AFROJAMS — TEMP. 03 · EP. 03 · CREMOSA · DJ SET R&B & AFROBEATS · POP & RAP · FUNK & HOUSE REMIX",
+      thumbnail: YT_MQ("1_uXQTNd4zk"),
+    },
+    {
+      id: "2jWW5W5-sHU",
+      title:
+        "AFROJAMS — TEMP. 04 · EP. 02 · CREMOSA · DJ SET LOVE SONG · CHARME · R&B · ANOS 2000",
+      thumbnail: YT_MQ("2jWW5W5-sHU"),
+    },
+    {
+      id: "uo4CwvRcfOQ",
+      title:
+        "AFROJAMS — TEMP. 05 · EP. 03 · CREMOSA · DJ SET MIAMI BASS · VOLT MIX · NOSTALGIC",
+      thumbnail: YT_MQ("uo4CwvRcfOQ"),
+    },
+    {
+      id: "pOkyPxPnciI",
+      title:
+        "AFROJAMS — TEMP. 06 · EP. 07 · CREMOSA · DJ SET REMIXES & BRASILIDADES",
+      thumbnail: YT_MQ("pOkyPxPnciI"),
+    },
+  ],
+  playlistUrl: "https://www.youtube.com/playlist?list=PLLi5256twtgA",
+};
+
+/** Embed URL for a YouTube playlist. Plays the whole list with sane defaults. */
+export function youtubePlaylistEmbedUrl(playlistId: string): string {
+  const params = new URLSearchParams({
+    autoplay: "0",
+    rel: "0",
+    modestbranding: "1",
+    playsinline: "1",
+  });
+  return `${youtubeChannel.embedUrl}/videoseries?list=${playlistId}&${params.toString()}`;
+}
