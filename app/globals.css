@@ -66,13 +66,54 @@
 
 html,
 body {
-  background: var(--color-bg);
   color: var(--color-cream);
   font-family: var(--font-pixel);
   /* VT323 is a bitmap font — keep pixelated edges, no smoothing. */
   -webkit-font-smoothing: none;
   font-smooth: never;
   text-rendering: optimizeSpeed;
+}
+
+body {
+  /* Y2K halftone pink-star tile + magenta gradient base.
+     Tile is rendered at 0.5 opacity on top of the wine gradient so
+     the pink halftone dots read clearly while the bg stays wine.
+     `soft-light` blend keeps the pink stars bright without washing
+     out the bg. */
+  background:
+    url("/bg/star-halftone.jpg"),
+    linear-gradient(
+      180deg,
+      #6a2840 0%,
+      #8a3a55 50%,
+      #6a2840 100%
+    ),
+    var(--color-bg);
+  background-size: 220px 220px, 100% 100%, 100% 100%;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-position: 0 0, 0 0, 0 0;
+  background-attachment: fixed, fixed, fixed;
+  background-blend-mode: soft-light, normal, normal;
+  background-color: var(--color-bg);
+  /* Soften the tile so it reads as a wallpaper pattern, not a
+     stamp. opacity lives here, not on the layer. */
+  position: relative;
+}
+body::before {
+  /* Tile sits on top of body's gradient via a pseudo-element so we
+     can layer opacity without losing the gradient. */
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("/bg/star-halftone.jpg");
+  background-size: 220px 220px;
+  background-repeat: repeat;
+  background-position: 0 0;
+  background-attachment: fixed;
+  opacity: 0.55;
+  mix-blend-mode: lighten;
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Hide the SiteNav header while the PressStartGate splash is active
@@ -152,14 +193,18 @@ body[data-gate-active="true"] header.sticky {
    the wine gradient behind it. */
 .bg-anim-stars {
   position: fixed;
-  inset: 0;
-  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
   pointer-events: none;
   background-image: url("/bg/star-halftone.jpg");
   background-size: 220px 220px;
   background-repeat: repeat;
   background-position: 0 0;
   opacity: 0.85;
+  mix-blend-mode: lighten;
   will-change: background-position;
 }
 
