@@ -186,7 +186,7 @@ export function PressStartGate({ children, allowSkip = true }: PressStartGatePro
             {/* "Press Start" — just text, the whole splash is the
                 click target. Magenta glow pulses to draw the eye. */}
             <p
-              className="win-eyebrow animate-pressstart-pulse text-center mt-2"
+              className="win-eyebrow text-center"
               style={{
                 fontSize: "clamp(28px, 5vw, 44px)",
                 letterSpacing: "0.2em",
