@@ -274,7 +274,7 @@ export default function MusicaPage() {
             <span aria-hidden>{"//"}</span>
             Início <span className="opacity-60 mx-1">›</span> Música
           </p>
-          <p className="mt-6 max-w-2xl win-body text-cream-dim">
+          <p className="mt-6 max-w-2xl win-body">
             {tracks.length} sets no arquivo. Clica numa faixa abaixo ou arrasta
             qualquer MP3 aqui — o visualizador pulsa com a música em tempo real
             via Web Audio API.
