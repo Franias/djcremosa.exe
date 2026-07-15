@@ -51,7 +51,7 @@ export default function SobrePage() {
       </section>
 
       {/* PINK MANIFESTO SECTION — kept as the kit's pink mode */}
-      <section className="pink-mode halftone">
+      <section className="win95-statusbar halftone">
         <div className="relative shell py-16 sm:py-24">
           <div className="relative z-10 grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
