@@ -129,6 +129,21 @@ export default function HomePage() {
             </Win95Window>
           </section>
 
+          {/* "Internet royalty" accent strip — decorative badge below the
+              booking CTA. Sized `max-w-sm` so it reads as a small flourish
+              rather than competing with the booking window above. Decorative
+              (alt=""); the booking CTA already carries the message here. */}
+          <img
+            src={`${site.basePath}/photos/internet-royalty.gif`}
+            alt=""
+            width={480}
+            height={201}
+            loading="lazy"
+            decoding="async"
+            className="block h-auto w-full max-w-sm mx-auto mt-6 sm:mt-8 mb-6 sm:mb-8"
+            style={{ imageRendering: "pixelated" }}
+          />
+
           {/* Welcome dialog — 4×3 icon grid (Win95.com pattern) */}
           <div className="mt-6 sm:mt-10 w-full max-w-4xl">
             <Win95Window title="cremosa.exe — welcome" controls>

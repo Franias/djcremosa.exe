@@ -41,6 +41,16 @@ export const youtubeChannel = {
 
 const VIDEOS: YouTubeVideo[] = [
   {
+    id: "vbFY4Sn7d0M",
+    title: "baguncinha calma na orla",
+    thumbnail: "https://i.ytimg.com/vi/vbFY4Sn7d0M/hqdefault.jpg",
+  },
+  {
+    id: "tZ2tU0bygPw",
+    title: "baguncinha pop atualizada",
+    thumbnail: "https://i.ytimg.com/vi/tZ2tU0bygPw/hqdefault.jpg",
+  },
+  {
     id: "2o0d2s5WBuA",
     title:
       "baguncinha em casa [djset tranquilo sza x frank ocean x tems x bryson tiller]",

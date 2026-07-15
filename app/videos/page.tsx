@@ -134,7 +134,7 @@ export default function VideosPage() {
       {/* AFROJAMS — guest playlist from the collective Cremosa co-founded.
           Playlist embed + Win95 tracklist side-by-side, then a subscribe
           CTA pointing at @AFRXJAMS. */}
-      <section className="shell py-10 sm:py-14 border-t border-line">
+      <section className="shell py-10 sm:py-14">
         <header className="mb-6 flex items-baseline justify-between gap-4 flex-wrap">
           <div>
             <p className="win-eyebrow win-eyebrow-shadow mb-2">
@@ -213,7 +213,7 @@ export default function VideosPage() {
       </section>
 
       {/* ARCHIVE — rest of the videos in a smaller grid */}
-      <section className="shell py-10 sm:py-14 border-t border-line">
+      <section className="shell py-10 sm:py-14">
         <header className="mb-6">
           <p className="win-eyebrow win-eyebrow-shadow mb-2">{"// arquivo"}</p>
         </header>
