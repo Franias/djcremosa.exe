@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Win95StatusBar } from "@/components/ui/win95";
+import { FooterCountdown } from "@/components/sections/FooterCountdown";
+import { events } from "@/content/events";
 import { site } from "@/lib/site";
 
 /**
@@ -24,6 +26,13 @@ import { site } from "@/lib/site";
  *
  *   Main in layout.tsx adds matching bottom padding so content
  *   never scrolls behind the footer.
+ *
+ * Segment rhythm (left → right):
+ *   1. Status dot + location (always visible)
+ *   2. Brand + "desde {activeSince}" (hidden on small viewports)
+ *   3. Next-event countdown → /agenda/ (hidden on small viewports
+ *      to protect the footer rhythm on phones)
+ *   4. Booking link → mailto (always visible)
  */
 export function SiteFooter() {
   return (
@@ -34,6 +43,9 @@ export function SiteFooter() {
         </span>
         <span className="win95-statusbar-segment shrink hidden sm:inline">
           {site.brand.name} · desde {site.brand.activeSince}
+        </span>
+        <span className="win95-statusbar-segment shrink hidden md:inline">
+          <FooterCountdown events={events} />
         </span>
         <span className="win95-statusbar-segment shrink">
           <Link

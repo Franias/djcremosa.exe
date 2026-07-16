@@ -64,9 +64,11 @@ export function FooterCountdown({ events }: { events: CremosaEvent[] }) {
   if (!next) {
     timer = "—";
   } else if (deltaMs === null) {
-    // Placeholder matches the post-tick width (11 chars) so the
-    // status-bar segment doesn't reflow when the real value lands.
-    timer = "00:00:00:00";
+    // Placeholder matches the post-tick width (8 chars, `dd:hh:mm`)
+    // so the status-bar segment doesn't reflow when the real value
+    // lands. `formatCountdown().compact` produces the same 8-char
+    // shape after hydration.
+    timer = "00:00:00";
   } else if (deltaMs <= 0) {
     timer = "agora";
   } else {

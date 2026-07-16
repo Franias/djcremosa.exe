@@ -168,7 +168,11 @@ export function formatCountdown(deltaMs: number): {
   const m = pad(minutes);
   const s = pad(seconds);
   return {
-    compact: `${d}:${h}:${m}:${s}`,
+    // Footer-size compact: `dd:hh:mm` (3 segments, 8 chars) — fits
+    // the fixed bottom status bar without re-flowing. FooterCountdown
+    // ticks every 1s but only displays minute precision; the seconds
+    // digit is dropped here so the segment stays the same width.
+    compact: `${d}:${h}:${m}`,
     full: `${d}d ${h}h ${m}m ${s}s`,
     days: d,
     hours: h,
