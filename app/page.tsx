@@ -75,13 +75,14 @@ export default function HomePage() {
           
           {/* Hero — figure in the middle, desktop icons on the two sides.
               On `md+` the row is `icons-left | figure | icons-right`. The
-              `visitantes.exe` tile (VisitCounter) sits in the SECOND slot
-              of the right column — where Destaques used to be — so the
-              counter reads as part of the desktop chrome rather than a
-              standalone left-column bookend. On phones the row collapses
-              to a stacked column (figure first) and the icons fall into a
-              3-col grid below — flanking would be unreadable on a
-              portrait viewport. */}
+              `visitantes.exe` tile (VisitCounter) is the FIRST item on
+              the right column, just below the top-right corner — same
+              slot a real Win95 desktop puts counter / Stat / clock
+              widgets in, so the counter reads as a top-of-column
+              bookend instead of a middle slot. On phones the row
+              collapses to a stacked column (figure first) and the
+              icons fall into a 3-col grid below — flanking would be
+              unreadable on a portrait viewport. */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 lg:gap-6 w-full">
             {/* Left side — the 6 page shortcuts that point inside the
                 site. Wrapped in a flex column with the same gap as the
@@ -106,16 +107,16 @@ export default function HomePage() {
               </div>
             </figure>
 
-            {/* Right side — Sets, then `visitantes.exe` (VisitCounter,
-                replaces the old Destaques entry), then the 5 external
-                shortcuts. The VisitCounter button is mounted inline so
-                it sits next to its pixel-art siblings and the modal
-                trigger follows the same hover rhythm as the rest of
-                the column. */}
+            {/* Right side — `visitantes.exe` (VisitCounter, replaces the
+                old Destaques entry) opens the column at the TOP, then
+                the 5 `rightSide` shortcuts follow (Sets first, then
+                SoundCloud, Instagram, Twitch, TikTok). The VisitCounter
+                button is mounted inline so it sits next to its pixel-
+                art siblings and the modal trigger follows the same
+                hover rhythm as the rest of the column. */}
             <div className="hidden md:flex shrink-0 flex-col items-center gap-2 lg:gap-3">
-              <WelcomeIcon {...WELCOME_ICONS.find((i) => i.label === "Sets")!} />
               <VisitCounter size="hero" />
-              {WELCOME_ICONS.filter((icon) => !icon.leftSide && icon.label !== "Sets").map((icon) => (
+              {WELCOME_ICONS.filter((icon) => !icon.leftSide).map((icon) => (
                 <WelcomeIcon key={icon.label} {...icon} />
               ))}
             </div>
@@ -123,12 +124,14 @@ export default function HomePage() {
 
           {/* Mobile icon grid — phones can't fit an icon-column beside
               the figure, so we show the icons in a 3-col grid right
-              below the figure. The VisitCounter tile is also rendered
-              here at the position that matches its desktop slot
-              (after Sets) so visitors on phones see the same
-              counter shortcut — the modal is reachable from any
-              breakpoint. md+ keeps the grid hidden because those
-              icons are already flanking the figure above. */}
+              below the figure. Order mirrors the desktop columns: 6
+              left-side icons first, then the right-side sequence. The
+              VisitCounter tile is rendered FIRST in the right-side
+              sequence so the counter sits in the same relative slot
+              as on desktop (top of right column). The modal is
+              reachable from any breakpoint. md+ keeps the grid hidden
+              because those icons are already flanking the figure
+              above. */}
           <div className="md:hidden w-full max-w-4xl mt-6">
             <Win95Window title="cremosa.exe — welcome" controls>
               <div className="bg-win-face p-4 text-win-ink">
@@ -136,21 +139,21 @@ export default function HomePage() {
                   {"// 11 atalhos + visitantes.exe · toque pra abrir"}
                 </p>
                 <ul className="grid grid-cols-3 gap-x-2 gap-y-5 list-none p-0">
-                  {/* Same left-then-right ordering as the desktop
-                      columns, so a switch from mobile to desktop (or
-                      vice-versa) keeps the visual sequence stable. */}
+                  {/* Left side anchors first (Agenda → Contato) */}
                   {WELCOME_ICONS.filter((i) => i.leftSide).map((icon) => (
                     <li key={icon.label} className="flex flex-col items-center">
                       <WelcomeIcon {...icon} />
                     </li>
                   ))}
-                  <li className="flex flex-col items-center">
-                    <WelcomeIcon {...WELCOME_ICONS.find((i) => i.label === "Sets")!} />
-                  </li>
+                  {/* Right side starts with visitantes.exe (counter) —
+                      same visual slot as on desktop, just stacked into
+                      the 3-col grid for portrait viewports. */}
                   <li className="flex flex-col items-center w-full">
                     <VisitCounter size="compact-hero" />
                   </li>
-                  {WELCOME_ICONS.filter((i) => !i.leftSide && i.label !== "Sets").map((icon) => (
+                  {/* Then the remaining 5 right-side anchors (Sets, then
+                      SoundCloud → TikTok). */}
+                  {WELCOME_ICONS.filter((i) => !i.leftSide).map((icon) => (
                     <li key={icon.label} className="flex flex-col items-center">
                       <WelcomeIcon {...icon} />
                     </li>
