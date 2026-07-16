@@ -14,6 +14,7 @@ import {
   type StrudelPattern,
 } from "@/content/strudel";
 import { cn } from "@/lib/cn";
+import { site } from "@/lib/site";
 
 /**
  * Paint95 — DJ Verbosa page body. Reproduces the jspaint.app
@@ -313,23 +314,32 @@ export function Paint95({ initialSlug }: Paint95Props) {
           </div>
         </div>
 
-        {/* CANVAS — white blank with the Strudel code */}
+        {/* CANVAS — white blank with the Strudel code.
+            The code is rendered as a static image (the same MS
+            Paint window you shared, with the active pattern's
+            code baked into the white blank at /dj-verbosa/strudel-on-
+            paint.png). The pattern source is the PNG that PIL
+            generated from the same `pattern.code` string we
+            ship in `content/strudel.ts`, so the image and the
+            "copiar código" button are always in sync. */}
         <div className="flex-1 min-w-0 win95-bevel-in bg-[#808080] p-1">
           <div className="win95-bevel-deep-in bg-white flex flex-col">
             <div className="relative flex" style={{ minHeight: "420px" }}>
-              {/* The CODE — painted onto the white blank */}
-              <pre
-                role="img"
-                aria-label={`Strudel code for ${pattern.title}`}
-                className={cn(
-                  "grow m-0 font-mono text-[12px] sm:text-[13px]",
-                  "leading-[1.55] whitespace-pre overflow-auto",
-                  "p-4 sm:p-6 select-text",
-                )}
-                style={{ color: inkColor }}
-              >
-                {pattern.code}
-              </pre>
+              {/* The CODE — painted onto the white blank. The image
+                  carries the Strudel code for the active pattern, so
+                  the "first frame" of the Paint95 window matches the
+                  MS Paint reference exactly. Clicking still hits the
+                  same `handleCopy` on the parent <button>, but the
+                  `copiar código` button is the primary action. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${site.basePath}/dj-verbosa/strudel-on-paint.png`}
+                alt={`Strudel code for ${pattern.title}, painted in MS Paint`}
+                title={`${pattern.title} — ${pattern.code.length} chars / ${pattern.code.split("\n").length} lines`}
+                className="grow m-0 w-full h-auto select-text block"
+                style={{ imageRendering: "pixelated", objectFit: "contain", maxHeight: "420px" }}
+                draggable={false}
+              />
 
               {/* Right vertical scrollbar — decorative, matches
                   jspaint.app's right-side canvas scrollbar. */}
