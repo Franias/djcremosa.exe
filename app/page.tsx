@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { EventRow } from "@/components/sections/EventRow";
 import { Sparkle } from "@/components/sections/Sparkle";
+import { VisitCounter } from "@/components/sections/VisitCounter";
 import { Win95Dialog } from "@/components/sections/Win95Dialog";
 import { HomeAbout } from "@/components/sections/HomeAbout";
 import { PressStartGate } from "@/components/PressStartGate";
@@ -14,22 +15,31 @@ import { site } from "@/lib/site";
 
 
 /**
- * Win95.com-style welcome dialog. 12 shortcut icons arranged in a
- * 4×3 grid, each linking to a page or external resource.
+ * Welcome icons — Win95.com-style desktop shortcuts. Each entry
+ * has an `icon` (the react95 PNG — see `public/icons/win95/`)
+ * and a `label` shown below. The icons are split into two
+ * desktop-side columns around the hero figure:
+ *
+ *   - `leftSide: true`  → placed on the LEFT of the figure
+ *   - `leftSide: false` → placed on the RIGHT of the figure
+ *
+ * The icons themselves come from `@react95/icons` (the same set
+ * used by react95.io). Sourced on disk so the static export stays
+ * dependency-free — the PNGs are 32×32 native Win95 .ico art.
  */
 const WELCOME_ICONS = [
-  { glyph: "📅", label: "Agenda", href: "/agenda/", external: false },
-  { glyph: "🎵", label: "Música", href: "/musica/", external: false },
-  { glyph: "🖼", label: "Galeria", href: "/galeria/", external: false },
-  { glyph: "🎞", label: "Vídeos", href: "/videos/", external: false },
-  { glyph: "📖", label: "Sobre", href: "/sobre/", external: false },
-  { glyph: "✉", label: "Contato", href: "/contato/", external: false },
-  { glyph: "💿", label: "Sets", href: "/musica/", external: false },
-  { glyph: "⭐", label: "Destaques", href: "/#destaques", external: false },
-  { glyph: "🎧", label: "SoundCloud", href: "https://soundcloud.com/cremosinha", external: true },
-  { glyph: "📷", label: "Instagram", href: site.social.instagram?.url ?? "#", external: true },
-  { glyph: "🕹", label: "Twitch", href: site.social.twitch?.url ?? "#", external: true },
-  { glyph: "🎬", label: "TikTok", href: site.social.tiktok?.url ?? "#", external: true },
+  { icon: `${site.basePath}/icons/win95/calendar.png`,    label: "Agenda",     href: "/agenda/",                           external: false, leftSide: true  },
+  { icon: `${site.basePath}/icons/win95/media-audio.png`, label: "Música",     href: "/musica/",                           external: false, leftSide: true  },
+  { icon: `${site.basePath}/icons/win95/camera.png`,      label: "Galeria",    href: "/galeria/",                          external: false, leftSide: true  },
+  { icon: `${site.basePath}/icons/win95/media-video.png`, label: "Vídeos",     href: "/videos/",                           external: false, leftSide: true  },
+  { icon: `${site.basePath}/icons/win95/help-book.png`,   label: "Sobre",      href: "/sobre/",                            external: false, leftSide: true  },
+  { icon: `${site.basePath}/icons/win95/mail.png`,        label: "Contato",    href: "/contato/",                          external: false, leftSide: true  },
+  { icon: `${site.basePath}/icons/win95/media-cd.png`,    label: "Sets",       href: "/musica/",                           external: false, leftSide: false },
+  { icon: `${site.basePath}/icons/win95/star.png`,        label: "Destaques",  href: "/#destaques",                        external: false, leftSide: false },
+  { icon: `${site.basePath}/icons/win95/media-audio.png`, label: "SoundCloud", href: "https://soundcloud.com/cremosinha",   external: true,  leftSide: false },
+  { icon: `${site.basePath}/icons/win95/camera.png`,      label: "Instagram",  href: site.social.instagram?.url ?? "#",    external: true,  leftSide: false },
+  { icon: `${site.basePath}/icons/win95/joystick.png`,    label: "Twitch",     href: site.social.twitch?.url ?? "#",       external: true,  leftSide: false },
+  { icon: `${site.basePath}/icons/win95/media-video.png`, label: "TikTok",     href: site.social.tiktok?.url ?? "#",       external: true,  leftSide: false },
 ] as const;
 
 /** Pipe-separated sitemap row — secondary nav, Win95.com-style footer. */
@@ -59,23 +69,22 @@ export default function HomePage() {
               invisible because the page already has an sr-only h1 with
               the site's real identity ("Cremosa — Início"). */}
           
-          {/* Hero figure with party GIFs flanking — flex row from md up,
-              stacked on phones (GIFs hidden via `hidden md:block`). The
-              figure uses `flex-1 min-w-0` so it shrinks to make room for
-              the GIFs while keeping its `max-w-5xl` cap on wider screens. */}
+          {/* Hero — figure in the middle, desktop icons on the two sides.
+              On `md+` the row is `icons-left | figure | icons-right`, with
+              VisitCounter at the top of the left column so it sits above
+              the photo when there's room. On phones the row collapses to
+              a stacked column (figure first) and the icons fall into a
+              3-col grid below — flanking would be unreadable on a
+              portrait viewport. */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-3 md:gap-4 lg:gap-6 w-full">
-            {/* Left GIF — decorative, hidden from AT */}
-            <div className="hidden md:block win95-bevel-out p-[2px] shrink-0">
-              <img
-                src={`${site.basePath}/photos/party-like-its-2002.gif`}
-                alt=""
-                width={500}
-                height={228}
-                loading="lazy"
-                decoding="async"
-                className="block h-auto w-32 lg:w-40 xl:w-48"
-                style={{ imageRendering: "pixelated" }}
-              />
+            {/* Left side — VisitCounter + the 6 page shortcuts that
+                point inside the site. Wrapped in a flex column with the
+                same gap as the right column so the two sides mirror. */}
+            <div className="hidden md:flex shrink-0 flex-col items-center gap-2 lg:gap-3">
+              <VisitCounter size="hero" />
+              {WELCOME_ICONS.filter((icon) => icon.leftSide).map((icon) => (
+                <WelcomeIcon key={icon.label} {...icon} />
+              ))}
             </div>
 
             <figure className="p-6 w-full md:flex-1 md:min-w-0 md:max-w-5xl">
@@ -92,23 +101,46 @@ export default function HomePage() {
               </div>
             </figure>
 
-            {/* Right GIF — decorative, hidden from AT (intentionally not
-                a duplicate `alt` to signal symmetry without repetition) */}
-            <div
-              className="hidden md:block win95-bevel-out p-[2px] shrink-0"
-              aria-hidden
-            >
-              <img
-                src={`${site.basePath}/photos/party-like-its-2002.gif`}
-                alt=""
-                width={500}
-                height={228}
-                loading="lazy"
-                decoding="async"
-                className="block h-auto w-32 lg:w-40 xl:w-48"
-                style={{ imageRendering: "pixelated" }}
-              />
+            {/* Right side — the 6 external + sets/destaques shortcuts.
+                Same gap rhythm as the left column for visual symmetry.
+                On `md` (where the column gets tight) the icon size
+                shrinks so the figure still has room to breathe. */}
+            <div className="hidden md:flex shrink-0 flex-col items-center gap-2 lg:gap-3">
+              {WELCOME_ICONS.filter((icon) => !icon.leftSide).map((icon) => (
+                <WelcomeIcon key={icon.label} {...icon} />
+              ))}
             </div>
+          </div>
+
+          {/* Mobile icon grid — phones can't fit an icon-column beside
+              the figure, so we show the full 12-icon set in a 3-col
+              grid right below the figure. Visually identical to the
+              Win95.com "12 atalhos · toque pra abrir" desktop but
+              stacked instead of flanking. md+ keeps it hidden because
+              those icons are already flanking the figure above. */}
+          <div className="md:hidden w-full max-w-4xl mt-6">
+            <Win95Window title="cremosa.exe — welcome" controls>
+              <div className="bg-win-face p-4 text-win-ink">
+                <p className="win-eyebrow text-win-shadow-deep mb-4 text-center">
+                  {"// 12 atalhos · toque pra abrir"}
+                </p>
+                <ul className="grid grid-cols-3 gap-x-2 gap-y-5 list-none p-0">
+                  {WELCOME_ICONS.map((icon) => (
+                    <li key={icon.label} className="flex flex-col items-center">
+                      <WelcomeIcon {...icon} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="win95-statusbar mt-2">
+                <span className="win95-statusbar-segment grow">
+                  © 2026 {site.brand.name} · POA, RS
+                </span>
+                <span className="win95-statusbar-segment shrink">
+                  v1.0 · 2026
+                </span>
+              </div>
+            </Win95Window>
           </div>
           {/* Breadcrumb — the page indicator */}
           <section className="shell">
@@ -144,38 +176,12 @@ export default function HomePage() {
             style={{ imageRendering: "pixelated" }}
           />
 
-          {/* Welcome dialog — 4×3 icon grid (Win95.com pattern) */}
-          <div className="mt-6 sm:mt-10 w-full max-w-4xl">
-            <Win95Window title="cremosa.exe — welcome" controls>
-              <div className="bg-win-face p-4 sm:p-7 text-win-ink">
-                <p className="win-eyebrow text-win-shadow-deep mb-4 sm:mb-5 text-center">
-                  {"// 12 atalhos · toque pra abrir"}
-                </p>
-                {/* Grid: 3 cols on phones (icons stay >44px tap-target),
-                    4 cols from sm (640px). The sm:gap-x-5 widens the
-                    columns slightly to use the extra horizontal room. */}
-                <ul className="grid grid-cols-3 sm:grid-cols-4 gap-x-2 sm:gap-x-5 gap-y-5 sm:gap-y-6 list-none p-0">
-                  {WELCOME_ICONS.map((icon) => (
-                    <li key={icon.label} className="flex flex-col items-center">
-                      <WelcomeIcon {...icon} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {/* Status bar — echoes Win95.com footer */}
-              <div className="win95-statusbar mt-2">
-                <span className="win95-statusbar-segment grow">
-                  © 2026 {site.brand.name} · POA, RS
-                </span>
-                <span className="win95-statusbar-segment grow hidden sm:inline">
-                  {site.brand.tagline.primary}
-                </span>
-                <span className="win95-statusbar-segment shrink">
-                  v1.0 · 2026
-                </span>
-              </div>
-            </Win95Window>
-          </div>
+          {/* The desktop `cremosa.exe — welcome` 4×3 grid used to live
+              here, but the icon set now flanks the figure above (see
+              the hero row). On phones the icons fall into a stacked
+              grid that already lives right under the figure. No
+              second Win95Window needed on desktop — keeps the
+              page from repeating itself. */}
 
           {/* Pipe-separated link row — secondary nav like the Windows95.com footer */}
           <nav
@@ -399,11 +405,14 @@ export default function HomePage() {
   );
 }
 
-/* WelcomeIcon — a single tile in the home-page desktop icon grid.
-   External destinations render as <a target="_blank">; same-origin
-   routes use Next's <Link>. The tile is a full tap-target on phones
-   (≥44px tall) and on hover (pointer devices) the icon bg flips to
-   the win-light color. Touch devices never see the hover.
+/* WelcomeIcon — a single desktop-icon tile in the home-page layout.
+   Renders a react95 PNG icon (sourced from `public/icons/win95/`)
+   with the label below — same look as `<VisitCounter size="hero">`,
+   no gray bevel frame. External destinations render as
+   `<a target="_blank">`; same-origin routes use Next's `<Link>`.
+   The tile is a full tap-target on phones (≥44px tall) and on
+   hover (pointer devices) the label flips to the crimson hover
+   color. Touch devices never see the hover.
 
    Tooltip strategy:
      - `data-tooltip` is the long description ("Ir para Agenda").
@@ -416,13 +425,13 @@ export default function HomePage() {
    We previously duplicated the long and short strings, but keeping
    them separate is intentional: native browser tooltip vs. CSS. */
 interface WelcomeIconProps {
-  glyph: string;
+  icon: string;
   label: string;
   href: string;
   external: boolean;
 }
 
-function WelcomeIcon({ glyph, label, href, external }: WelcomeIconProps) {
+function WelcomeIcon({ icon, label, href, external }: WelcomeIconProps) {
   const tooltip = external
     ? `Abrir ${label} em nova aba`
     : `Ir para ${label}`;
@@ -430,18 +439,34 @@ function WelcomeIcon({ glyph, label, href, external }: WelcomeIconProps) {
   // readable. `cn()` filters out falsy branches for us.
   const linkClass = cn(
     "win95-icon group no-underline no-context",
-    "flex flex-col items-center gap-1.5 sm:gap-2",
+    "flex flex-col items-center gap-1.5",
     "tap-target",
   );
-  const iconBoxClass =
-    "text-3xl sm:text-5xl win95-bevel-out bg-win-face-2 p-1.5 sm:p-2 group-hover:bg-win-light transition-colors";
+  // No gray bevel frame — same look as `<VisitCounter size="hero">`,
+  // so the desktop chrome reads as one consistent set of pixel
+  // icons flanking the figure. Hover bumps the PNG up a couple of
+  // pixels and bumps the label to `text-crimson`, like the
+  // VisitCounter hover state.
   const labelClass =
-    "win-caption text-center text-win-ink group-hover:text-crimson transition-colors leading-tight";
+    "win-caption text-center text-win-ink group-hover:text-crimson transition-colors leading-tight max-w-[7rem]";
 
   const body = (
     <>
-      <span aria-hidden className={iconBoxClass} style={{ imageRendering: "pixelated" }}>
-        {glyph}
+      <span aria-hidden className="p-1.5" style={{ imageRendering: "pixelated" }}>
+        {/* The native PNG is 32×32; `h-12 w-12` (48px) on the
+            flanking hero columns matches the visual footprint of
+            the VisitCounter hero tile. `imageRendering: pixelated`
+            keeps the 1-bit Win95 art crisp at 2× and beyond. */}
+        <img
+          src={icon}
+          alt=""
+          width={32}
+          height={32}
+          loading="lazy"
+          decoding="async"
+          className="block h-12 w-12 transition-transform group-hover:-translate-y-0.5"
+          style={{ imageRendering: "pixelated" }}
+        />
       </span>
       <span className={labelClass}>{label}</span>
     </>
