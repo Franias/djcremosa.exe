@@ -59,15 +59,13 @@ export default function DjVerbosaPage() {
       {/* PAINT95 SECTION — the focal point of the page.
           Full-width within the shell, big enough to show the
           Strudel code comfortably with the full jspaint.app
-          chrome around it. */}
+          chrome around it (title bar, Padrão selector + copy
+          buttons, menu bar, 2-col toolbox, canvas, color
+          palette, status bar). The component renders the code
+          as a real <pre> at 18–22pt monospace, selectable +
+          copyable, so the user can read it at any zoom. */}
       <section className="shell py-8 sm:py-12">
-        <img
-                src={`${site.basePath}/dj-verbosa/strudel-on-paint.png`}
-                alt={`Strudel code for, painted in MS Paint`}
-                className="grow m-0 w-full h-auto select-text block"
-                style={{ imageRendering: "pixelated", objectFit: "contain", maxHeight: "420px" }}
-                draggable={false}
-              />
+        <Paint95 />
       </section>
 
       {/* ABOUT / HOW-TO / SHORTCUTS — three info cards like
