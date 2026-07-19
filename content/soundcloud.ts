@@ -85,7 +85,7 @@ const TRACKS: Omit<SoundCloudTrack, "permalink" | "audioSrc">[] = [
 
 export const tracks: SoundCloudTrack[] = TRACKS.map((t) => ({
   ...t,
-  permalink: `https://soundcloud.com/cremosinha/${t.slug}`,
+  permalink: `https://soundcloud.com/djcremosa/${t.slug}`,
   audioSrc: `${site.basePath}/audio/${t.slug}.mp3`,
 }));
 
@@ -100,7 +100,7 @@ export const sets: SoundCloudSet[] = [
   {
     slug: "meu-brasiu",
     title: "meu brasiu",
-    permalink: "https://soundcloud.com/cremosinha/sets/meu-brasiu",
+    permalink: "https://soundcloud.com/djcremosa/sets/meu-brasiu",
     note: "Playlist curada — panorama do que toca na pista.",
   },
 ];

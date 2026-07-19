@@ -66,11 +66,11 @@ test.describe("02 — Home page", () => {
     }
   });
 
-  test("SoundCloud icon opens soundcloud.com/cremosinha", async ({ page }) => {
+  test("SoundCloud icon opens soundcloud.com/djcremosa", async ({ page }) => {
     const icon = page.locator('a.win95-icon[title="SoundCloud"]').first();
     await expect(icon).toBeVisible();
     const href = await icon.getAttribute("href");
-    expect(href).toBe("https://soundcloud.com/cremosinha");
+    expect(href).toBe("https://soundcloud.com/djcremosa");
   });
 
   test("Instagram icon opens instagram.com/djcremosa", async ({ page }) => {

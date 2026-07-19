@@ -40,7 +40,7 @@ const WELCOME_ICONS = [
   { icon: `${site.basePath}/icons/win95/help-book.png`,   label: "Sobre",      href: "/sobre/",                            external: false, leftSide: true  },
   { icon: `${site.basePath}/icons/win95/mail.png`,        label: "Contato",    href: "/contato/",                          external: false, leftSide: true  },
   { icon: `${site.basePath}/icons/win95/media-cd.png`,    label: "Sets",       href: "/musica/",                           external: false, leftSide: false },
-  { icon: `${site.basePath}/icons/win95/media-audio.png`, label: "SoundCloud", href: "https://soundcloud.com/cremosinha",   external: true,  leftSide: false },
+  { icon: `${site.basePath}/icons/win95/media-audio.png`, label: "SoundCloud", href: "https://soundcloud.com/djcremosa",   external: true,  leftSide: false },
   { icon: `${site.basePath}/icons/win95/camera.png`,      label: "Instagram",  href: site.social.instagram?.url ?? "#",    external: true,  leftSide: false },
   { icon: `${site.basePath}/icons/win95/joystick.png`,    label: "Twitch",     href: site.social.twitch?.url ?? "#",       external: true,  leftSide: false },
   { icon: `${site.basePath}/icons/win95/media-video.png`, label: "TikTok",     href: site.social.tiktok?.url ?? "#",       external: true,  leftSide: false },

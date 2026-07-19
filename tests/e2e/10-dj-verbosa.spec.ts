@@ -8,8 +8,11 @@ import { test, expect } from "@playwright/test";
  * canvas area. The user can type/edit the Strudel code directly
  * inside the Paint canvas. No buttons, no interactive chrome.
  *
- * The image used is `/img/paint95-bg.png` (1089×759, copied from
- * the user's reference screenshot).
+ * The image used is `${site.basePath}/img/paint95-bg.png` (1089×759,
+ * copied from the user's reference screenshot). The selector
+ * below uses `*=...paint95-bg.png` so it matches whether the
+ * `site.basePath` prefix is empty (dev) or `/djcremosa.exe`
+ * (production on GitHub Pages).
  */
 
 test.describe("10 — DJ Verbosa", () => {

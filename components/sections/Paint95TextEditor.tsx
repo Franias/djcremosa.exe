@@ -1,17 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { site } from "@/lib/site";
 import { STRUDEL_PATTERNS } from "@/content/strudel";
 
 /**
  * Paint95TextEditor — DJ Verbosa section body.
  *
  * Renders the MS Paint 95 reference image as a static background
- * (`/img/paint95-bg.png`, 1089×759 — copied verbatim from the
- * user's reference) and overlays a transparent `<textarea>` in
- * the white canvas area. No buttons, no toolbar, no palette
+ * (`${site.basePath}/img/paint95-bg.png`, 1089×759 — copied verbatim
+ * from the user's reference) and overlays a transparent `<textarea>`
+ * in the white canvas area. No buttons, no toolbar, no palette
  * interactions — the image is static and the canvas is a plain
  * text editor with the Strudel code as the initial value.
+ *
+ * NOTE: the src uses `site.basePath` (not a bare `/img/...`) because
+ * Next.js only auto-prefixes basePath for `_next/*` assets and `<Link>`
+ * hrefs. Raw `<img>` tags pointing at the `public/` folder need the
+ * prefix manually, otherwise the asset 404s on GitHub Pages
+ * (see https://franias.github.io/djcremosa.exe/dj-verbosa/ bug).
  *
  * The textarea boundaries (as % of the source image) line up
  * with the visible white canvas in the reference:
@@ -60,7 +67,7 @@ export function Paint95TextEditor() {
        * the canvas content.
        */}
       <img
-        src="/img/paint95-bg.png"
+        src={`${site.basePath}/img/paint95-bg.png`}
         alt=""
         aria-hidden
         draggable={false}
