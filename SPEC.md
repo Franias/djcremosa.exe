@@ -219,13 +219,14 @@ Status:      ok #7eea9a, warn #ffcc66, down #ff6477
 | Tema | Decisão |
 |---|---|
 | App Router | Sim — layouts aninhados quando precisar (ex: `(site)/agenda/[year]`) |
-| Client Components | **Mínimo** — hoje zero. Filtro agenda é server-side via `searchParams` |
+| Client Components | **Mínimo** — somente ilhas que precisam de browser/realtime: filtro agenda, métricas de visitantes e modo graffiti. |
 | Imagens | `next/image` + Cloudinary loader (Fase 2) |
 | Vídeo | Embed YouTube/Vimeo, nunca self-host |
 | Áudio (sets) | Embed SoundCloud/Mixcloud |
 | Fonts | `next/font/google` (auto-self-hospedadas, zero CLS) |
 | Forms | `mailto:` no MVP. Fase 2: Resend + React Email ou Formspree |
 | Analytics | Fase 5: Plausible (cookie-free) |
+| Realtime collaboration | `playhtml` em room público fixo: PageData persistente para o mural finalizado + Presence efêmero para previews ao vivo. |
 | Deploy | Vercel (free tier cobre tranquilamente) |
 | Domínio sugerido | `djcremosa.com.br` · alias `cremosa.art` |
 | Idioma | `pt-BR` no `<html lang>`. EN fica pra `/en/*` se um dia precisar |
@@ -304,6 +305,22 @@ public/
 - [ ] Domínio custom `djcremosa.com.br` (CNAME para `<user>.github.io`)
 - [ ] Link na bio de todas as redes
 - [ ] Submit sitemap ao Google Search Console
+
+### ✅ Fase 7 — Mural colaborativo (FEITO)
+- [x] `G` alterna graffiti mode site-wide; inputs/textareas não são interrompidos
+- [x] Canvas viewport overlay com spray determinístico, cursor de lata e instrução junto ao cursor
+- [x] Toolbar com paleta, slider contínuo de tamanho (8–96px) e botão APAGAR por autor
+- [x] Spray mais pigmentado (brush-like): mais partículas, alpha mais alta, miolo opaco
+- [x] Fade in/out da camada transparente ao entrar/sair do modo (`G`) sem perder traços já pintados
+- [x] Aviso `BE NICE!` em estilo Y2K (display font + magenta) por ~2.4s ao ativar o modo
+- [x] Botão SHARE na toolbar exporta mural como PNG Win95-styled com legenda `CONTRACT CREMOSA FOR YOU SHOW`
+- [x] `navigator.share({ files })` opcional em browsers móveis (Instagram Stories, etc.)
+- [x] Mural persistente (`site-graffiti-strokes`) + previews ao vivo (`site-graffiti-active-stroke`) via playhtml
+- [x] Apagamento local: remove apenas os strokes pintados neste navegador; preserva graffiti de outros visitantes
+- [x] Fallback de toque/mobile, paleta de cores, tamanhos de spray e limites anti-crescimento
+- [x] Testes Playwright para atalho, pintura local, slider, densidade de brush, pass-through, controle de paleta/eraser e apagamento por autor
+
+> O serviço realtime usa o room público do playhtml; ele não é uma camada de moderação. O mural tem limite de tamanho e deve receber uma estratégia de reset/moderação antes de abrir uma campanha pública de longa duração.
 
 > **Vercel é a alternativa**: trocar `output: 'export'` por um deploy direto na Vercel te dá de volta SSR nativo, `next/image` otimizado, ISR e API routes. Recomendado se algum dia precisar de formulário com backend ou visualização em tempo real.
 

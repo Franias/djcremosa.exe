@@ -22,6 +22,10 @@ export interface TextFile {
   title: string;
   /** Path relative to /public/ — basePath is applied at fetch time. */
   path: string;
+  /** Short description shown below the file title in the menu. */
+  note: string;
+  /** UTF-8 byte size displayed in the menu before loading. */
+  bytes: number;
 }
 
 export const TEXT_FILES: TextFile[] = [
@@ -29,16 +33,22 @@ export const TEXT_FILES: TextFile[] = [
     slug: "clean-breaks",
     title: "clean-breaks",
     path: "text-files/clean-breaks.txt",
+    note: "separadores para entradas",
+    bytes: 162,
   },
   {
     slug: "baile-funk",
     title: "baile-funk",
     path: "text-files/baile-funk.txt",
+    note: "base de baile funk",
+    bytes: 205,
   },
   {
     slug: "360-kaixi",
     title: "360-kaixi",
     path: "text-files/charlie-360-KAIXI.txt",
+    note: "padrão 360 · KAIXI",
+    bytes: 6596,
 
   },
 ];

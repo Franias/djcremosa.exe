@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { PageDataChannel, PlayHTMLComponents } from "playhtml";
+import type { PageDataChannel } from "playhtml";
+import { loadPlayhtml } from "@/lib/playhtml";
 
-export const SITE_ROOM = "dj-cremosa-site";
 export const VISITOR_COUNT_CHANNEL = "site-visitor-count";
 export const VISITOR_PRESENCE_CHANNEL = "site-visitor-presence";
 
@@ -12,26 +12,7 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
 type VisitorCount = { total: number };
 
-let playhtmlPromise: Promise<PlayHTMLComponents | null> | null = null;
 let visitRecordedThisLoad = false;
-
-/** Load playhtml only in the browser: its runtime intentionally uses document. */
-function loadPlayhtml(): Promise<PlayHTMLComponents | null> {
-  if (!playhtmlPromise) {
-    playhtmlPromise = import("playhtml")
-      .then(async ({ playhtml }) => {
-        await playhtml.init({
-          room: SITE_ROOM,
-          onError: () => {
-            console.warn("[cremosa] realtime visitor service unavailable");
-          },
-        });
-        return playhtml;
-      })
-      .catch(() => null);
-  }
-  return playhtmlPromise;
-}
 
 function recordVisitor(channel: PageDataChannel<VisitorCount>): void {
   if (visitRecordedThisLoad) return;

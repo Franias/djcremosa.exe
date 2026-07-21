@@ -1625,3 +1625,377 @@ body[data-gate-active="true"] header.sticky {
     padding-bottom: 1rem;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────────
+   Collaborative graffiti layer
+
+   The canvas is a transparent viewport-sized sheet of glass. It is
+   inert in clean mode, so links and the Win95 chrome remain completely
+   clickable. G enables it and the canvas temporarily captures pointer
+   input for spray painting.
+   ────────────────────────────────────────────────────────────────── */
+.graffiti-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  background: transparent;
+  touch-action: none;
+  /* Default: layer is faded out — the user's stale strokes still live
+     in the shared PageData mural, they just stop intercepting
+     pointer events. Toggling graffiti mode back on reveals them
+     with a quick fade. */
+  opacity: 0;
+  transition: opacity 600ms ease-out;
+}
+.graffiti-canvas-active {
+  pointer-events: auto;
+  cursor: var(--graffiti-cursor), crosshair;
+  opacity: 1;
+  transition-duration: 200ms;
+}
+body[data-graffiti-mode="true"],
+body[data-graffiti-mode="true"] * {
+  cursor: var(--graffiti-cursor), crosshair !important;
+}
+
+.graffiti-cursor-hint {
+  position: fixed;
+  z-index: 72;
+  max-width: min(235px, calc(100vw - 1rem));
+  width: min(215px, calc(100vw - 1rem));
+  padding: 0.28rem 0.45rem;
+  border: 2px solid var(--win-shadow-deep);
+  border-top-color: var(--win-light);
+  border-left-color: var(--win-light);
+  background: var(--win-face);
+  color: var(--win-ink);
+  font-family: var(--font-pixel);
+  font-size: 0.78rem;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+  user-select: none;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  box-shadow: 2px 2px 0 var(--win-shadow-deep);
+}
+.graffiti-cursor-hint-active {
+  background: #2a0814;
+  color: var(--color-cream);
+  border-color: var(--color-bubble-hi);
+  box-shadow: 2px 2px 0 var(--color-crimson-deep);
+}
+
+.graffiti-toggle,
+.graffiti-toolbar,
+.graffiti-notice {
+  font-family: var(--font-pixel);
+  -webkit-font-smoothing: none;
+  text-rendering: optimizeSpeed;
+}
+.graffiti-toggle {
+  position: fixed;
+  right: max(0.75rem, env(safe-area-inset-right));
+  bottom: max(5.75rem, calc(env(safe-area-inset-bottom) + 5rem));
+  top: auto;
+  z-index: 74;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2.35rem;
+  padding: 0.4rem 0.6rem;
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow-deep);
+  border-bottom-color: var(--win-shadow-deep);
+  background: var(--win-face);
+  color: var(--win-ink);
+  font-size: 0.78rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 1px 1px 0 var(--win-shadow-deep);
+}
+.graffiti-toggle:hover,
+.graffiti-toggle:focus-visible {
+  background: var(--win-face-2);
+  outline: 2px solid var(--color-bubble);
+  outline-offset: 2px;
+}
+.graffiti-toggle:active,
+.graffiti-toggle-active {
+  border-top-color: var(--win-shadow-deep);
+  border-left-color: var(--win-shadow-deep);
+  border-right-color: var(--win-light);
+  border-bottom-color: var(--win-light);
+  background: var(--color-magenta);
+  color: var(--color-cream);
+  box-shadow: none;
+}
+
+.graffiti-toolbar {
+  position: fixed;
+  left: 50%;
+  bottom: max(5.5rem, calc(env(safe-area-inset-bottom) + 4.75rem));
+  top: auto;
+  z-index: 73;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.35rem;
+  max-width: calc(100vw - 9.5rem);
+  padding: 0.35rem 0.5rem;
+  transform: translateX(-50%);
+  border: 2px solid var(--win-shadow-deep);
+  border-top-color: var(--win-light);
+  border-left-color: var(--win-light);
+  background: var(--win-face);
+  color: var(--win-ink);
+  box-shadow: 2px 2px 0 var(--win-shadow-deep);
+}
+.graffiti-toolbar-label,
+.graffiti-live-status {
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.graffiti-live-status {
+  color: var(--color-crimson-deep);
+}
+.graffiti-color-list,
+.graffiti-size-list,
+.graffiti-size-control {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.graffiti-size-control {
+  gap: 0.45rem;
+  padding: 0 0.2rem;
+}
+.graffiti-size-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 9rem;
+  height: 1.45rem;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.graffiti-size-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow);
+  border-bottom-color: var(--win-shadow);
+  background: var(--win-face-2);
+}
+.graffiti-size-slider::-moz-range-track {
+  height: 6px;
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow);
+  border-bottom-color: var(--win-shadow);
+  background: var(--win-face-2);
+}
+.graffiti-size-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -12px;
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow-deep);
+  border-bottom-color: var(--win-shadow-deep);
+  background: var(--win-face);
+  box-shadow: 1px 1px 0 var(--win-shadow-deep);
+}
+.graffiti-size-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow-deep);
+  border-bottom-color: var(--win-shadow-deep);
+  background: var(--win-face);
+  box-shadow: 1px 1px 0 var(--win-shadow-deep);
+}
+.graffiti-size-slider:focus-visible {
+  outline: 2px solid var(--color-bubble);
+  outline-offset: 4px;
+}
+.graffiti-size-readout {
+  font-size: 0.72rem;
+  min-width: 3rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.graffiti-eraser {
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow-deep);
+  border-bottom-color: var(--win-shadow-deep);
+  background: var(--win-face);
+  color: var(--win-ink);
+  font-family: var(--font-pixel);
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.4rem 0.55rem;
+  cursor: pointer;
+  min-height: 1.85rem;
+  white-space: nowrap;
+}
+.graffiti-eraser:hover,
+.graffiti-eraser:focus-visible {
+  background: var(--win-face-2);
+  outline: 2px solid var(--color-bubble);
+  outline-offset: 2px;
+}
+.graffiti-eraser:active {
+  border-top-color: var(--win-shadow-deep);
+  border-left-color: var(--win-shadow-deep);
+  border-right-color: var(--win-light);
+  border-bottom-color: var(--win-light);
+  background: var(--color-magenta);
+  color: var(--color-cream);
+}
+.graffiti-share {
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow-deep);
+  border-bottom-color: var(--win-shadow-deep);
+  background: var(--win-face);
+  color: var(--win-ink);
+  font-family: var(--font-pixel);
+  font-size: 0.72rem;
+  line-height: 1;
+  padding: 0.4rem 0.55rem;
+  cursor: pointer;
+  min-height: 1.85rem;
+  white-space: nowrap;
+}
+.graffiti-share:hover,
+.graffiti-share:focus-visible {
+  background: var(--win-face-2);
+  outline: 2px solid var(--color-bubble);
+  outline-offset: 2px;
+}
+.graffiti-share:active {
+  border-top-color: var(--win-shadow-deep);
+  border-left-color: var(--win-shadow-deep);
+  border-right-color: var(--win-light);
+  border-bottom-color: var(--win-light);
+  background: var(--color-magenta);
+  color: var(--color-cream);
+}
+.graffiti-color,
+.graffiti-size {
+  display: grid;
+  place-items: center;
+  width: 1.45rem;
+  height: 1.45rem;
+  padding: 0;
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow);
+  border-bottom-color: var(--win-shadow);
+  cursor: pointer;
+}
+.graffiti-color[aria-pressed="true"],
+.graffiti-size[aria-pressed="true"] {
+  outline: 2px solid var(--win-title-1);
+  outline-offset: -3px;
+}
+.graffiti-size {
+  background: var(--win-face-2);
+  color: var(--win-ink);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+}
+.graffiti-size:last-child {
+  font-size: 1.15rem;
+}
+.graffiti-notice {
+  position: fixed;
+  left: 50%;
+  bottom: max(8.75rem, calc(env(safe-area-inset-bottom) + 8rem));
+  z-index: 75;
+  padding: 0.45rem 0.6rem;
+  transform: translateX(-50%);
+  border: 2px solid var(--win-shadow-deep);
+  border-top-color: var(--win-light);
+  border-left-color: var(--win-light);
+  background: var(--win-face);
+  color: var(--win-ink);
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+/* BE NICE! house-rule chip — lives inside the Win95 chrome
+   aesthetic: chunky bevel, pixel font, small size. It sits on top of
+   the graffiti toolbar so it reads as part of the same window. */
+.graffiti-notice-be-nice {
+  position: fixed;
+  left: 50%;
+  top: max(8rem, calc(env(safe-area-inset-top) + 7.25rem));
+  bottom: auto;
+  z-index: 76;
+  transform: translate(-50%, calc(-100% - 0.5rem));
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border: 2px solid var(--win-light);
+  border-right-color: var(--win-shadow-deep);
+  border-bottom-color: var(--win-shadow-deep);
+  background: var(--win-face);
+  color: var(--win-ink);
+  box-shadow: 2px 2px 0 var(--win-shadow-deep);
+  font-family: var(--font-pixel);
+  font-size: 0.78rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  cursor: default;
+  pointer-events: none;
+  -webkit-font-smoothing: none;
+  text-rendering: optimizeSpeed;
+}
+.graffiti-notice-be-nice .graffiti-notice-title {
+  display: inline-block;
+}
+@media (max-width: 639px) {
+  .graffiti-notice-be-nice {
+    top: max(8.5rem, calc(env(safe-area-inset-top) + 7.75rem));
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 639px) {
+  .graffiti-toolbar {
+    left: 0.75rem;
+    right: 7.5rem;
+    bottom: max(4.75rem, calc(env(safe-area-inset-bottom) + 4rem));
+    top: auto;
+    max-width: none;
+    transform: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .graffiti-toggle {
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: max(4.75rem, calc(env(safe-area-inset-bottom) + 4rem));
+  }
+  .graffiti-toolbar::-webkit-scrollbar {
+    display: none;
+  }
+  .graffiti-toolbar-label {
+    display: none;
+  }
+  .graffiti-size-slider {
+    width: 6rem;
+  }
+  .graffiti-live-status {
+    margin-left: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .graffiti-cursor-hint,
+  .graffiti-toggle,
+  .graffiti-toolbar {
+    transition: none;
+  }
+}

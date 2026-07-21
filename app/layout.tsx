@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/nav/SiteNav";
 import { SiteFooter } from "@/components/nav/SiteFooter";
 import { VerticalRails } from "@/components/sections/VerticalRails";
 import { SiteVisitorRuntime } from "@/components/SiteVisitorRuntime";
+import { GraffitiRuntime } from "@/components/GraffitiRuntime";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -147,6 +148,7 @@ export default function RootLayout({
             // correctly in production (e.g. /djcremosa/bg/...) while
             // staying empty in dev where basePath is "".
             "--bg-stars": `url("${site.basePath}/bg/star-halftone.jpg")`,
+            "--graffiti-cursor": `url("${site.basePath}/cursors/spray-can.svg")`,
           } as React.CSSProperties
         }
       >
@@ -156,6 +158,7 @@ export default function RootLayout({
         {/* Boot splash removed — the Press Start gate on / handles first-
             session UX now. Kept the component around for future use. */}
         <SiteVisitorRuntime />
+        <GraffitiRuntime />
         <SiteNav />
         {/* Vertical side rails echoing the Midia Kit editorial frame */}
         <main className="flex-1 relative z-10 pb-16 safe-bottom sm:pb-20">{children}</main>

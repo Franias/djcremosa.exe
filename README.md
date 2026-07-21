@@ -55,10 +55,17 @@ O tile `visitantes.exe` usa [`playhtml`](https://playhtml.fun/docs/) com a sala 
 
 - `site-visitor-count` é **page data persistente** e guarda o total de visitantes.
 - `site-visitor-presence` é **presence efêmera** e alimenta o número "online agora".
-- `lib/visitorStats.ts` importa o runtime dinamicamente no navegador, porque o playhtml usa APIs do DOM e o site é exportado estaticamente.
+- `lib/playhtml.ts` centraliza a importação dinâmica do runtime no navegador, porque o playhtml usa APIs do DOM e o site é exportado estaticamente; métricas e graffiti reutilizam o mesmo singleton.
 - `cremosa-visit-recorded-at` no `localStorage` limita cada navegador a um incremento por 24 horas.
 
-O serviço PartyKit hospedado pelo playhtml é público e não criptografado por padrão. Isso é aceitável para métricas públicas, mas não armazene dados privados nessa sala. O plugin de Claude do repositório é opcional e serve para gerar código; a aplicação usa diretamente o pacote npm `playhtml`.
+O mural usa duas camadas no mesmo room público:
+
+- `site-graffiti-strokes` é `PageData` persistente: strokes finalizados aparecem depois de reload e em qualquer rota.
+- `site-graffiti-active-stroke` é `Presence` efêmero: o spray que está sendo desenhado aparece ao vivo para outras pessoas e desaparece quando a sessão fecha.
+
+A tecla `G` liga/desliga o modo em qualquer lugar (fora de inputs/textareas). Ao entrar, um aviso `BE NICE!` aparece por ~2.4s. No modo ativo, a camada transparente captura o arraste, o cursor vira uma lata de spray e a etiqueta junto ao cursor instrui `PRESSIONE G PARA GRAFITAR`. Ao sair, a camada faz fade-out (opacity 1→0 em 600ms) e libera o clique — os traços pintados continuam persistidos no mural compartilhado. O botão `G · GRAFFITI` é o fallback para toque/mobile. A barra flutuante tem paleta de 5 cores da marca, um slider de 8–96px para o tamanho do spray, um botão `APAGAR` que remove apenas os traços pintados neste navegador (outros visitantes continuam visíveis) e um botão `SHARE` que exporta o mural como PNG com moldura Win95 (`graffiti.exe · CREMOSA`) e legenda `CONTRACT CREMOSA FOR YOU SHOW` pronta pra postar no Instagram ou em qualquer rede. A muralha é deliberadamente pública e limitada a 320 strokes para o room não crescer sem controle.
+
+O serviço PartyKit hospedado pelo playhtml é público e não criptografado por padrão; não armazene dados privados nessa sala. O plugin de Claude do repositório é opcional e a aplicação usa diretamente o pacote npm `playhtml`.
 
 ## 📁 Estrutura
 
