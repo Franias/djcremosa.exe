@@ -36,19 +36,6 @@ Pronto. Cada push em `main` rebuilda em ~60s. URL pública padrão:
 https://SEU-USER.github.io/dj-cremosa/
 ```
 
-### Domínio custom (djcremosa.com.br)
-
-Ver [`SPEC.md` §7](../../Projects/dj-cremosa/SPEC.md#7-como-rodar-e-fazer-deploy) para detalhes. Resumo:
-- Comprou o domínio → configura no painel do GitHub Pages
-- CNAME no DNS → repo faz o resto
-- HTTPS é automático após provisioning
-
-### Domínio custom ⚠️ (limitação do plano free)
-
-GitHub Pages no plano **free** só permite domínio custom em repos **públicos**. Para repo privado + domínio custom:
-- **GitHub Pro** (~$4/mês), ou
-- Hospedar `out/` em outro lugar (Cloudflare Pages, Netlify, Surge.sh — todos têm free tier com domínios custom).
-
 ## 👀 Visitantes em tempo real
 
 O tile `visitantes.exe` usa [`playhtml`](https://playhtml.fun/docs/) com a sala pública fixa `dj-cremosa-site`:
