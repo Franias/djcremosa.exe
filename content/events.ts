@@ -103,6 +103,22 @@ export const events: CremosaEvent[] = [
       "https://www.sympla.com.br/evento/baile-do-dez-segunda-edicao/3481116",
     note: ".",
   },
+  {
+    slug: "baile-do-080-2026-08-22",
+    title: "080",
+    date: "2026-08-22",
+    time: "23h",
+    venue: "Flamula /// Sports Bar",
+    city: "Santa Cruz do Sul",
+    region: "RS",
+    country: "Brasil",
+    status: "confirmed",
+    category: "club",
+    lineup: ["Cremosa"],
+    ticketUrl:
+      "",
+    note: ".",
+  },
 
   // ─────── HISTORICAL (confirmed, from Midia Kit 2026) ───────
   // {
