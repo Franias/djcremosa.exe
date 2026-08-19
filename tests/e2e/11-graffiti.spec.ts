@@ -454,6 +454,66 @@ await page.evaluate(
     expect(remoteStrokes.some((stroke) => stroke.id === "remote-1")).toBe(true);
   });
 
+  test("wipes the mural when the build timestamp is newer than the shared lastResetAt stamp", async ({
+    page,
+  }) => {
+    await openHome(page);
+    await waitForPlayhtmlReady(page);
+
+    // Forge a stale mural: an old stranger stroke + lastResetAt: 0
+    // (the "never wiped" sentinel). Because the bundle's
+    // BUILD_TIMESTAMP is always > 0, the runtime must treat this as
+    // stale and reset the canvas on the next read.
+    await page.evaluate(() => {
+      const channel = window.playhtml.createPageData(
+        "site-graffiti-strokes",
+        { version: 1, strokes: [] },
+      );
+      channel.setData({
+        version: 1,
+        strokes: [
+          {
+            id: "stale-stranger-1",
+            author: "stranger",
+            points: [
+              [0.4, 0.4],
+              [0.45, 0.5],
+              [0.55, 0.5],
+              [0.6, 0.6],
+            ],
+            color: "#fffefe",
+            size: 40,
+            seed: 42,
+            createdAt: Date.now() - 3_600_000,
+          },
+        ],
+        lastResetAt: 0,
+      });
+      channel.destroy();
+    });
+
+    // Give the runtime a tick to react to the seeded state via its
+    // onUpdate subscription.
+    await page.waitForTimeout(200);
+
+    const wiped = await page.evaluate(() => {
+      const channel = window.playhtml.createPageData(
+        "site-graffiti-strokes",
+        { version: 1, strokes: [] },
+      );
+      const data = channel.getData();
+      channel.destroy();
+      return {
+        strokes: data.strokes.length,
+        lastResetAt: data.lastResetAt ?? 0,
+      };
+    });
+    expect(wiped.strokes).toBe(0);
+    // The wipe must stamp the channel with a non-zero timestamp so the
+    // next visitor running the same bundle doesn't re-wipe.
+    expect(wiped.lastResetAt).toBeGreaterThan(0);
+  });
+
   test("mobile viewport keeps SHARE / APAGAR visible and hides the cursor hint", async ({
     browser,
   }) => {

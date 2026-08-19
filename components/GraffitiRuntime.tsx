@@ -37,6 +37,19 @@ const POINTER_HINT_OFFSET = 18;
 const POINTER_HINT_BOTTOM_GUTTER = 96;
 const PRESENCE_THROTTLE_MS = 60;
 
+/**
+ * Build timestamp baked into the bundle by `next.config.ts`. Every push
+ * rolls this value forward, so the very first visitor running a fresh
+ * bundle wipes the public mural (see `updateData` below). `0` means
+ * "no build stamp available" (e.g. local dev without the env block) and
+ * disables the auto-wipe so dev sessions can paint freely.
+ */
+const BUILD_TIMESTAMP = (() => {
+  const fromEnv = Number(process.env.NEXT_PUBLIC_BUILD_TIMESTAMP ?? 0);
+  if (Number.isFinite(fromEnv) && fromEnv > 0) return Math.floor(fromEnv);
+  return 0;
+})();
+
 type PointerPosition = { x: number; y: number };
 
 function readAuthorId(): string {
@@ -230,7 +243,34 @@ export function GraffitiRuntime() {
 
       const updateData = (data: unknown) => {
         if (cancelled) return;
-        setStrokes(sanitizeGraffitiData(data).strokes);
+        const sanitized = sanitizeGraffitiData(data);
+        // Wipe-on-push: when this bundle is newer than the stamp left
+        // by the previous deploy, start the mural fresh. Every push
+        // bumps BUILD_TIMESTAMP, so any new bundle triggers exactly one
+        // reset (the first visitor subscribes and stamps the canvas
+        // with the new BUILD_TIMESTAMP; later visitors see the stamp
+        // already matches and skip the reset). The local paint
+        // pipeline (setStrokes + setData) still works in the same
+        // tick because the new BUILD_TIMESTAMP is baked into the
+        // empty payload we push up.
+        if (BUILD_TIMESTAMP > 0) {
+          const lastResetAt = sanitized.lastResetAt ?? 0;
+          if (BUILD_TIMESTAMP > lastResetAt) {
+            setStrokes([]);
+            try {
+              dataChannelRef.current?.setData({
+                version: 1,
+                strokes: [],
+                lastResetAt: BUILD_TIMESTAMP,
+              });
+              setNotice("mural limpo · novo build online");
+            } catch {
+              setNotice("mural limpo · conexão em pausa");
+            }
+            return;
+          }
+        }
+        setStrokes(sanitized.strokes);
       };
       updateData(channel.getData());
       unsubscribeData = channel.onUpdate(updateData);

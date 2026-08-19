@@ -44,6 +44,14 @@ export interface GraffitiStroke {
 export interface GraffitiData {
   version: 1;
   strokes: GraffitiStroke[];
+  /**
+   * Epoch ms of the last mural wipe. The runtime uses this stamp to
+   * decide whether the bundle's build timestamp should trigger a fresh
+   * reset — every push bumps the stamp, every push wipes the canvas.
+   * Optional so older payloads (without this field) keep loading and
+   * are treated as "stale" (0 < any real BUILD_TIMESTAMP).
+   */
+  lastResetAt?: number;
 }
 
 export interface GraffitiPreview {
@@ -61,6 +69,10 @@ export type GraffitiDataChannel = PageDataChannel<GraffitiData>;
 export const EMPTY_GRAFFITI_DATA: GraffitiData = {
   version: 1,
   strokes: [],
+  // 0 is a sentinel meaning "never wiped" — any real BUILD_TIMESTAMP
+  // baked into a deploy will be greater, so the runtime resets on the
+  // first load of a new bundle.
+  lastResetAt: 0,
 };
 
 const COLOR_SET = new Set<string>(GRAFFITI_COLORS);
@@ -143,8 +155,13 @@ export function sanitizeGraffitiData(value: unknown): GraffitiData {
         .filter((stroke): stroke is GraffitiStroke => stroke !== null)
         .slice(-MAX_GRAFFITI_STROKES)
     : [];
+  const lastResetAt =
+    typeof candidate.lastResetAt === "number" &&
+    Number.isFinite(candidate.lastResetAt)
+      ? Math.floor(candidate.lastResetAt)
+      : 0;
 
-  return { version: 1, strokes };
+  return { version: 1, strokes, lastResetAt };
 }
 
 export function sanitizeGraffitiPreview(value: unknown): GraffitiPreview | null {

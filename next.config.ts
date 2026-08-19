@@ -33,6 +33,19 @@ const nextConfig: NextConfig = {
   basePath,
   trailingSlash: true,
   images: { unoptimized: true },
+  env: {
+    // Frozen at build time so every client running the same bundle
+    // shares the same "last deploy" anchor. Used by `GraffitiRuntime`
+    // to wipe the collaborative mural on every push: any visitor whose
+    // built bundle is newer than the shared `lastResetAt` resets the
+    // canvas. Override via NEXT_PUBLIC_BUILD_TIMESTAMP in CI to make
+    // the stamp deterministic (defaults to `Date.now()` on the
+    // machine running the build).
+    NEXT_PUBLIC_BUILD_TIMESTAMP: String(
+      process.env.NEXT_PUBLIC_BUILD_TIMESTAMP ?? Date.now(),
+    ),
+    NEXT_PUBLIC_BUILD_SHA: process.env.NEXT_PUBLIC_BUILD_SHA ?? "local",
+  },
 };
 
 export default nextConfig;
