@@ -86,11 +86,11 @@ html {
 }
 
 body {
-  /* Y2K halftone pink-star tile + magenta gradient base.
+  /* Soft pink hearts tile + magenta gradient base.
      The --bg-stars CSS var is set in layout.tsx so the URL gets
      the site.basePath prefix in production (e.g. /djcremosa/bg/...).
-     Falls back to /bg/star-halftone.jpg for dev. */
-  --bg-stars: url("/bg/star-halftone.jpg");
+     Falls back to /bg/newbackground2.jpg for dev. */
+  --bg-stars: url("/bg/newbackground2.jpg");
   background:
     var(--bg-stars),
     linear-gradient(
@@ -100,7 +100,7 @@ body {
       #FFFFFF 100%
     ),
     var(--color-bg);
-  background-size: 420px 420px, 100% 100%, 100% 100%;
+  background-size: 420px auto, 100% 100%, 100% 100%;
   background-repeat: repeat, no-repeat, no-repeat;
   background-position: 0 0, 0 0, 0 0;
   background-attachment: fixed, fixed, fixed;
@@ -115,18 +115,20 @@ body {
   -webkit-tap-highlight-color: rgba(255, 111, 163, 0.35);
 }
 body::before {
-  /* Tile sits on top of body's gradient via a pseudo-element so we
-     can layer opacity without losing the gradient. */
+  /* Butterfly — a single centered graphic on a solid pink field,
+     so we paint it full-bleed (`cover`) and let its pink backdrop
+     fill the viewport instead of tiling a lone element. The
+     `filter` desaturates + brightens it to read as a paler,
+     whiter pink. */
   content: "";
   position: fixed;
   inset: 0;
   background-image: var(--bg-stars);
-  background-size: 420px 420px;
-  background-repeat: repeat;
-  background-position: 0 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
   background-attachment: fixed;
-  opacity: 0.55;
-  mix-blend-mode: lighten;
+  filter: saturate(0.78) brightness(1.05);
   pointer-events: none;
   z-index: 0;
 }
@@ -201,11 +203,9 @@ body[data-gate-active="true"] header.sticky {
   will-change: background-position;
 }
 
-/* Halftone star tile — sits between bg-anim and bg-anim-grain in
+/* Hearts tile — sits between bg-anim and bg-anim-grain in
    z-index order, painted above the bg-anim radials but below the
-   grain layer. Uses background-blend-mode: multiply so the pink
-   dots tint the magenta base, and the white halos disappear into
-   the wine gradient behind it. */
+   grain layer. */
 .bg-anim-stars {
   position: fixed;
   top: 0;
@@ -214,8 +214,8 @@ body[data-gate-active="true"] header.sticky {
   bottom: 0;
   z-index: 0;
   pointer-events: none;
-  background-image: url("/bg/star-halftone.jpg");
-  background-size: 420px 420px;
+  background-image: url("/bg/newbackground2.jpg");
+  background-size: 420px auto;
   background-repeat: repeat;
   background-position: 0 0;
   opacity: 0.85;

@@ -5,24 +5,43 @@
  * page's "instructions" dialog. The two buttons (`Imprimir`,
  * `OK`) need browser APIs to function so they live in a client
  * component.
+ *
+ * Mirrors the `HomeAbout` "cremosa — propriedades" pattern:
+ * - OK: dismisses the dialog into a "(fechado) · reabrir" strip.
+ * - reabrir: brings the dialog back.
+ * The window uses `controls` (not `closeable`), so the title-bar
+ * glyphs stay decorative and only the OK button closes it.
  */
+import { useState } from "react";
 import { Win95Button, Win95Window } from "@/components/ui/win95";
 
 export function AgendaInstructions() {
+  const [open, setOpen] = useState(true);
+
   function handlePrint() {
     if (typeof window !== "undefined") window.print();
   }
 
   function handleOk() {
-    if (typeof window !== "undefined") {
-      // Smooth-scroll back up to the filter row so the user can
-      // immediately engage with the next-view.
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    setOpen(false);
+  }
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="win95-bevel-out bg-win-face p-[2px] w-full text-left"
+      >
+        <div className="win95-bevel-deep-in bg-win-face px-4 py-3 text-win-ink win-eyebrow hover:bg-bubble/10">
+          agenda - instruções (fechado) · reabrir
+        </div>
+      </button>
+    );
   }
 
   return (
-    <Win95Window title="agenda - instruções" controls closeable>
+    <Win95Window title="agenda - instruções" controls>
       <div className="p-4 sm:p-5 bg-win-face text-win-ink flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
         <p className="win-body-sm">
           Próximos shows, festivais e residências. Ingressos pelo link.

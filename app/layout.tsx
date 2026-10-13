@@ -147,7 +147,7 @@ export default function RootLayout({
             // basePath-aware URL so the CSS background-image resolves
             // correctly in production (e.g. /djcremosa/bg/...) while
             // staying empty in dev where basePath is "".
-            "--bg-stars": `url("${site.basePath}/bg/star-halftone.jpg")`,
+            "--bg-stars": `url("${site.basePath}/bg/newbackground2.jpg")`,
             "--graffiti-cursor": `url("${site.basePath}/cursors/spray-can.svg")`,
           } as React.CSSProperties
         }

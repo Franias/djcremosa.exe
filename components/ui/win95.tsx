@@ -34,17 +34,10 @@ interface Win95WindowProps extends HTMLAttributes<HTMLDivElement> {
   /** Optional node to render in the title-bar slot beside the title. */
   titleExtras?: ReactNode;
   /**
-   * Promote the title-bar × to a real <button>.
-   *
-   * Two modes:
-   * - With `onClose`: parent owns visibility (e.g. modal drawers). The
-   *   button just calls `onClose` — the parent hides the window.
-   * - Without `onClose`: the window self-manages. Clicking × collapses
-   *   the window into a `<title> (fechado) · reabrir` button (mirrors
-   *   the HomeAbout pattern). Clicking "reabrir" brings the window
-   *   back. This is the default behavior for every standalone section.
-   *
-   * Implies `controls=true`. The first two (─, □) stay decorative.
+   * Legacy flag — the title-bar × is now always a functional close
+   * button, so `closeable` no longer gates it. It still forces the
+   * ─ / □ / × controls to render (redundant with `controls`, which
+   * defaults to `true`). Kept for backward compatibility.
    */
   closeable?: boolean;
   /** Fires when the user clicks the title-bar ×. */
@@ -64,16 +57,17 @@ export function Win95Window({
   closeLabel,
   ...rest
 }: Win95WindowProps) {
-  // `closeable` implies controls are visible. Keep the visual ─ / □
-  // glyphs from `.win95-title-controls`; only the final × is wired.
+  // Controls are shown by default; `closeable` is kept for backward
+  // compatibility. All three glyphs (─, □, ×) are now wired.
   const showControls = controls || closeable;
 
-  // Self-managed open/closed state. Only used when the consumer
-  // passes `closeable` without an `onClose` — i.e. they want the
-  // default "click × → swap for reabrir" behavior. Externally
-  // managed windows (modals) keep using `onClose` and ignore this.
+  // Self-managed window state. Windows without an `onClose` collapse
+  // to a "reabrir" strip when closed; ─ toggles a minimized (content
+  // hidden) state and □ toggles a maximized (full-viewport) state.
   const [selfOpen, setSelfOpen] = useState(true);
-  const isSelfManaged = closeable && !onClose;
+  const [minimized, setMinimized] = useState(false);
+  const [maximized, setMaximized] = useState(false);
+  const isSelfManaged = !onClose;
 
   // When the self-managed window is closed, replace the whole
   // window with a reabrir button that matches the HomeAbout
@@ -103,12 +97,24 @@ export function Win95Window({
     else setSelfOpen(false);
   };
 
+  const handleMinimize = () => setMinimized((m) => !m);
+  const handleMaximize = () => setMaximized((m) => !m);
+
   return (
     <div
-      className={cn("win95-bevel-out bg-win-face p-[2px]", className)}
+      className={cn(
+        "win95-bevel-out bg-win-face p-[2px]",
+        maximized && "fixed inset-0 z-50 flex flex-col",
+        className,
+      )}
       {...rest}
     >
-      <div className="win95-bevel-deep-in bg-win-face">
+      <div
+        className={cn(
+          "win95-bevel-deep-in bg-win-face",
+          maximized && "flex grow min-h-0 flex-col",
+        )}
+      >
         {(title || showControls) && (
           <div className="win95-title" role="presentation">
             <span className="flex items-center gap-2 min-w-0 flex-1 truncate">
@@ -121,31 +127,46 @@ export function Win95Window({
             </span>
             {showControls && (
               <span className="win95-title-controls">
-                {closeable ? (
-                  <>
-                    <span aria-hidden>─</span>
-                    <span aria-hidden>□</span>
-                    <button
-                      type="button"
-                      onClick={handleCloseClick}
-                      aria-label={closeLabel ?? "Fechar"}
-                      className="close"
-                    >
-                      ×
-                    </button>
-                  </>
-                ) : (
-                  <span className="contents" aria-hidden>
-                    <span>─</span>
-                    <span>□</span>
-                    <span className="close">×</span>
-                  </span>
-                )}
+                <button
+                  type="button"
+                  onClick={handleMinimize}
+                  aria-label="Minimizar"
+                  aria-pressed={minimized || undefined}
+                  className="minimize"
+                >
+                  ─
+                </button>
+                <button
+                  type="button"
+                  onClick={handleMaximize}
+                  aria-label="Maximizar"
+                  aria-pressed={maximized || undefined}
+                  className="maximize"
+                >
+                  □
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCloseClick}
+                  aria-label={closeLabel ?? "Fechar"}
+                  className="close"
+                >
+                  ×
+                </button>
               </span>
             )}
           </div>
         )}
-        <div className="win95-bevel-deep-in bg-win-face">{children}</div>
+        {!minimized && (
+          <div
+            className={cn(
+              "win95-bevel-deep-in bg-win-face",
+              maximized && "grow overflow-y-auto",
+            )}
+          >
+            {children}
+          </div>
+        )}
       </div>
     </div>
   );
