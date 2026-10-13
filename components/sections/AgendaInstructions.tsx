@@ -9,8 +9,8 @@
  * Mirrors the `HomeAbout` "cremosa — propriedades" pattern:
  * - OK: dismisses the dialog into a "(fechado) · reabrir" strip.
  * - reabrir: brings the dialog back.
- * The window uses `controls` (not `closeable`), so the title-bar
- * glyphs stay decorative and only the OK button closes it.
+ * The title-bar × (wired via `onClose`) also dismisses the dialog
+ * through the same `open` state.
  */
 import { useState } from "react";
 import { Win95Button, Win95Window } from "@/components/ui/win95";
@@ -41,7 +41,11 @@ export function AgendaInstructions() {
   }
 
   return (
-    <Win95Window title="agenda - instruções" controls>
+    <Win95Window
+      title="agenda - instruções"
+      controls
+      onClose={() => setOpen(false)}
+    >
       <div className="p-4 sm:p-5 bg-win-face text-win-ink flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
         <p className="win-body-sm">
           Próximos shows, festivais e residências. Ingressos pelo link.

@@ -53,7 +53,11 @@ export function HomeAbout() {
     <div className="grid lg:grid-cols-3 gap-6">
       <div className="lg:col-span-2">
         {showReadme ? (
-          <Win95Window title="cremosa.txt — readme" controls>
+          <Win95Window
+            title="cremosa.txt — readme"
+            controls
+            onClose={() => setShowReadme(false)}
+          >
             <div className="p-5 sm:p-6 bg-win-face text-win-ink">
               <p className="win-eyebrow mb-3 text-win-shadow-deep">
                 {`// ${site.brand.location} · desde ${site.brand.activeSince}`}
@@ -105,7 +109,11 @@ export function HomeAbout() {
 
       {showProps ? (
         <aside>
-          <Win95Window title="cremosa — propriedades" controls>
+          <Win95Window
+            title="cremosa — propriedades"
+            controls
+            onClose={() => setShowProps(false)}
+          >
             <div className="p-4 sm:p-5 bg-win-face text-win-ink text-[12px] win-body-sm leading-relaxed">
               <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1">
                 <dt className="text-win-shadow-deep">Nome:</dt>
