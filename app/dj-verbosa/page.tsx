@@ -144,6 +144,7 @@ export const metadata: Metadata = {
 export default function DjVerbosaPage() {
   return (
     <>
+    
       {/* HERO — minimal so the Paint95 section below gets the spotlight */}
       <section className="hero grain halftone">
         <div className="shell relative z-10">
@@ -169,25 +170,7 @@ export default function DjVerbosaPage() {
         </div>
       </section>
 
-      {/* PAINT95 SECTION — the focal point of the page.
-          Wrapped in a Win95Window with the same chrome as
-          the rest of the site (title bar with × close →
-          reabrir strip), so it reads as a peer of the
-          readme / how-to / chrome / toolbar windows below.
-          The static MS Paint 95 image + editable <textarea>
-          overlay sits inside, just like before — the window
-          chrome doesn't change the editor behavior. */}
-      <section className="shell py-8 sm:py-12">
-        <Win95Window
-          title="DJ Verbosa - Paint (verbosa.exe)"
-          controls
-          closeable
-        >
-          <Paint95TextEditor />
-        </Win95Window>
-      </section>
-
-      {/* ABOUT / HOW-TO / SHORTCUTS — three info cards like
+ {/* ABOUT / HOW-TO / SHORTCUTS — three info cards like
           the other pages. The Paint95 section above is the star;
           these fill in the editorial context. */}
       <section className="shell pb-16 sm:pb-24" id="properties-line-dj-verbosa">
@@ -273,7 +256,7 @@ export default function DjVerbosaPage() {
           <Win95Window title="chrome — explorar.cfg" controls closeable>
             <div className="p-4 sm:p-5 bg-win-face text-win-ink flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between">
               <p className="win-body-sm max-w-2xl">
-                Verbosa é Verbosa, mas a Cremosa também toca.
+                Verbosa é Verbosa.
                 Confere os sets finalizados e os vídeos das pistas.
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -288,6 +271,25 @@ export default function DjVerbosaPage() {
           </Win95Window>
         </div>
       </section>
+      {/* PAINT95 SECTION — the focal point of the page.
+          Wrapped in a Win95Window with the same chrome as
+          the rest of the site (title bar with × close →
+          reabrir strip), so it reads as a peer of the
+          readme / how-to / chrome / toolbar windows below.
+          The static MS Paint 95 image + editable <textarea>
+          overlay sits inside, just like before — the window
+          chrome doesn't change the editor behavior. */}
+      <section className="shell py-8 sm:py-12">
+        <Win95Window
+          title="DJ Verbosa - Paint (verbosa.exe)"
+          controls
+          closeable
+        >
+          <Paint95TextEditor />
+        </Win95Window>
+      </section>
+
+     
 
       {/* TOOLBAR REFERENCE — every icon on the left toolbar is
           clickable. This card documents all 16 positions (2 cols ×
