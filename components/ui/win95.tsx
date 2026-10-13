@@ -104,7 +104,7 @@ export function Win95Window({
     <div
       className={cn(
         "win95-bevel-out bg-win-face p-[2px]",
-        maximized && "fixed inset-0 z-50 flex flex-col",
+        maximized && "win95-maximized fixed inset-0 z-50 flex flex-col",
         className,
       )}
       {...rest}

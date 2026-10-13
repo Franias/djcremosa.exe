@@ -133,6 +133,13 @@ body::before {
   z-index: 0;
 }
 
+/* When any window is maximized, lift <main> above the sticky header
+   and fixed footer (both z-30) so the full-viewport window's title-bar
+   controls (─ □ ×) stay clickable instead of hiding behind the chrome. */
+body:has(.win95-maximized) main {
+  z-index: 40;
+}
+
 /* Hide the SiteNav header while the PressStartGate splash is active
    on the home page. The gate sets body[data-gate-active="true"] on
    mount and removes it on dismiss. */
