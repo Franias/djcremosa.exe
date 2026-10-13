@@ -263,7 +263,7 @@ export function GraffitiRuntime() {
                 strokes: [],
                 lastResetAt: BUILD_TIMESTAMP,
               });
-              setNotice("mural limpo · novo build online");
+              setNotice("mural limpo · grafite o site");
             } catch {
               setNotice("mural limpo · conexão em pausa");
             }
